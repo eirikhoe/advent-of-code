@@ -1,4 +1,3 @@
-import numpy as np
 
 with open("day_2_input.txt", "r") as file:
     instrs = [int(instr) for instr in file.read().split(",")]

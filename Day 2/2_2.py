@@ -1,10 +1,6 @@
-import numpy as np
 
 with open("day_2_input.txt", "r") as file:
     instrs = [int(instr) for instr in file.read().split(",")]
-
-# instrs[1] = 12
-# instrs[2] = 2
 
 def add(ptr, instrs):
     instrs[instrs[ptr + 3]] = instrs[instrs[ptr + 1]] + instrs[instrs[ptr + 2]]
