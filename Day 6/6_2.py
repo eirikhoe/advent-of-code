@@ -1,22 +1,19 @@
-import numpy as np 
+
+def find_ancestor_list(obj):    
+    ancestors = []
+    while obj != 'COM':
+        obj = orbits[obj]
+        ancestors.append(obj)
+    return ancestors
 
 orbits = dict()
 with open("day_6_input.txt", "r") as file:
     for line in file:
-        temp = (line.strip().split(")"))
-        orbits[temp[1]] = temp[0]        
+        objcts = (line.strip().split(")"))
+        orbits[objcts[1]] = objcts[0]        
 
-ancestors_you = []
-curr_obj = 'YOU'
-while curr_obj != 'COM':
-    curr_obj = orbits[curr_obj]
-    ancestors_you.append(curr_obj)
-
-ancestors_san = []
-curr_obj = 'SAN'
-while curr_obj != 'COM':
-    curr_obj = orbits[curr_obj]
-    ancestors_san.append(curr_obj)
+ancestors_you = find_ancestor_list('YOU')
+ancestors_san = find_ancestor_list('SAN')
 
 for i,ancestor in enumerate(ancestors_you):
     if ancestor in ancestors_san:
