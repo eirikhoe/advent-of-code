@@ -1,6 +1,6 @@
-
 with open("day_2_input.txt", "r") as file:
     instrs = [int(instr) for instr in file.read().split(",")]
+
 
 def add(ptr, instrs):
     instrs[instrs[ptr + 3]] = instrs[instrs[ptr + 1]] + instrs[instrs[ptr + 2]]
@@ -9,7 +9,7 @@ def add(ptr, instrs):
 
 def mult(ptr, instrs):
     instrs[instrs[ptr + 3]] = instrs[instrs[ptr + 1]] * instrs[instrs[ptr + 2]]
-    return ptr + 4    
+    return ptr + 4
 
 
 def run_intcode(instrs):
@@ -17,9 +17,10 @@ def run_intcode(instrs):
     instr_ptr = 0
     while instrs[instr_ptr] is not 99:
         try:
-            instr_ptr = operations[instrs[instr_ptr]](instr_ptr,instrs)
+            instr_ptr = operations[instrs[instr_ptr]](instr_ptr, instrs)
         except:
             return
+
 
 found = False
 for noun in range(100):
@@ -34,4 +35,5 @@ for noun in range(100):
     if found:
         break
 
-print(100*noun+verb)
+print(100 * noun + verb)
+

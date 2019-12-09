@@ -36,13 +36,15 @@ def outp(ptr, instrs, modes):
     print(instrs[addr[0]])
     return ptr + n_params + 1
 
+
 def jump_if_true(ptr, instrs, modes):
     n_params = 2
     addr = _find_addr(ptr, instrs, modes, n_params)
     if instrs[addr[0]] > 0:
         return instrs[addr[1]]
     else:
-        return ptr + n_params + 1 
+        return ptr + n_params + 1
+
 
 def jump_if_false(ptr, instrs, modes):
     n_params = 2
@@ -50,7 +52,8 @@ def jump_if_false(ptr, instrs, modes):
     if instrs[addr[0]] == 0:
         return instrs[addr[1]]
     else:
-        return ptr + n_params + 1 
+        return ptr + n_params + 1
+
 
 def less_than(ptr, instrs, modes):
     n_params = 3
@@ -60,6 +63,7 @@ def less_than(ptr, instrs, modes):
     else:
         instrs[addr[2]] = 0
     return ptr + n_params + 1
+
 
 def equals(ptr, instrs, modes):
     n_params = 3
@@ -71,9 +75,17 @@ def equals(ptr, instrs, modes):
     return ptr + n_params + 1
 
 
-
 def run_intcode(instrs):
-    operations = {1: add, 2: mult, 3: inp, 4: outp, 5: jump_if_true, 6: jump_if_false, 7: less_than, 8: equals}
+    operations = {
+        1: add,
+        2: mult,
+        3: inp,
+        4: outp,
+        5: jump_if_true,
+        6: jump_if_false,
+        7: less_than,
+        8: equals,
+    }
     instr_ptr = 0
     digits = [int(d) for d in str(instrs[instr_ptr])]
     if len(digits) == 1:

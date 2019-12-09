@@ -4,10 +4,10 @@ for number in range(146810, 612564 + 1):
     nondecreasing = True
     equal_counter = []
     equal_count = 1
-    for j in range(len(digits)-1):
+    for j in range(len(digits) - 1):
         if digits[j] == digits[j + 1]:
             equal_count += 1
-            if j==len(digits)-2:
+            if j == len(digits) - 2:
                 equal_counter.append(equal_count)
         else:
             equal_counter.append(equal_count)
