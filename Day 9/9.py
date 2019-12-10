@@ -1,6 +1,6 @@
 from pathlib import Path
 
-data_folder = Path("C:/Users/Eirik/Documents/Python Scripts/Advent of Code/Day 9")
+data_folder = Path(".")
 
 
 class IntCodeProgram:
@@ -18,7 +18,7 @@ class IntCodeProgram:
         else:
             return 0
 
-    def set(self, ptr, value, mode):
+    def set(self, ptr, mode, value):
         loc = self._find_loc(ptr, mode)
         self.instructions[loc] = value
 
@@ -36,8 +36,8 @@ def add(prog, modes):
     modes = modes + [0] * (n_params - len(modes))
     prog.set(
         prog.instr_ptr + 2,
-        prog.get(prog.instr_ptr, modes[0]) + prog.get(prog.instr_ptr + 1, modes[1]),
         modes[2],
+        prog.get(prog.instr_ptr, modes[0]) + prog.get(prog.instr_ptr + 1, modes[1]),
     )
     prog.instr_ptr += n_params
 
@@ -47,8 +47,8 @@ def mult(prog, modes):
     modes = modes + [0] * (n_params - len(modes))
     prog.set(
         prog.instr_ptr + 2,
-        prog.get(prog.instr_ptr, modes[0]) * prog.get(prog.instr_ptr + 1, modes[1]),
         modes[2],
+        prog.get(prog.instr_ptr, modes[0]) * prog.get(prog.instr_ptr + 1, modes[1]),
     )
     prog.instr_ptr += n_params
 
@@ -56,7 +56,7 @@ def mult(prog, modes):
 def inp(prog, modes):
     n_params = 1
     modes = modes + [0] * (n_params - len(modes))
-    prog.set(prog.instr_ptr, int(input()), modes[0])
+    prog.set(prog.instr_ptr, modes[0], int(input()))
     prog.instr_ptr += n_params
 
 
@@ -91,9 +91,9 @@ def less_than(prog, modes):
     n_params = 3
     modes = modes + [0] * (n_params - len(modes))
     if prog.get(prog.instr_ptr, modes[0]) < prog.get(prog.instr_ptr + 1, modes[1]):
-        prog.set(prog.instr_ptr + 2, 1, modes[2])
+        prog.set(prog.instr_ptr + 2, modes[2], 1)
     else:
-        prog.set(prog.instr_ptr + 2, 0, modes[2])
+        prog.set(prog.instr_ptr + 2, modes[2], 0)
     prog.instr_ptr += n_params
 
 
@@ -101,9 +101,9 @@ def equals(prog, modes):
     n_params = 3
     modes = modes + [0] * (n_params - len(modes))
     if prog.get(prog.instr_ptr, modes[0]) == prog.get(prog.instr_ptr + 1, modes[1]):
-        prog.set(prog.instr_ptr + 2, 1, modes[2])
+        prog.set(prog.instr_ptr + 2, modes[2], 1)
     else:
-        prog.set(prog.instr_ptr + 2, 0, modes[2])
+        prog.set(prog.instr_ptr + 2, modes[2], 0)
     prog.instr_ptr += n_params
 
 
