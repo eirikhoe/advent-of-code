@@ -40,12 +40,11 @@ print()
 
 # Part 2
 
-other_asteroids = asteroids.copy()
-other_asteroids[best_location[0], best_location[1]] = False
-n_other_asteroids = np.sum(other_asteroids, dtype=int)
+asteroids[best_location[0], best_location[1]] = False
+n_asteroids = np.sum(asteroids, dtype=int)
 
-coords_x = coord_x[other_asteroids]
-coords_y = coord_y[other_asteroids]
+coords_x = coord_x[asteroids]
+coords_y = coord_y[asteroids]
 
 dist_x = coords_x - best_location[1]
 dist_y = best_location[0] - coords_y
@@ -58,7 +57,7 @@ angle = np.pi - np.arctan2(directions_x, -directions_y)
 
 unique_directions = list(set(zip(directions_x, directions_y)))
 
-place = np.zeros(n_other_asteroids)
+place = np.zeros(n_asteroids)
 for unique_direction in unique_directions:
     current_asteroids = (directions_x == unique_direction[0]) & (
         directions_y == unique_direction[1]
@@ -72,9 +71,9 @@ for unique_direction in unique_directions:
     ] = np.arange(current_size)
     place[current_asteroids] = current_ranking
 
-rank = np.zeros(n_other_asteroids, dtype=int)
+rank = np.zeros(n_asteroids, dtype=int)
 order = np.lexsort((angle, place))
-rank[order] = np.arange(n_other_asteroids, dtype=int)
+rank[order] = np.arange(n_asteroids, dtype=int)
 
 
 i = 200
