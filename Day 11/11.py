@@ -35,6 +35,8 @@ class IntCodeProgram:
 
 
 class Robot:
+    """A class for a hull painting robot"""
+    
     def __init__(self, prog, initial_panel_color=0):
         self.location = (0, 0)
         self.panel_colors = {(0, 0): initial_panel_color}
@@ -238,18 +240,20 @@ def run_robot(robot):
 file = data_folder / "day_11_input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
+def main(): 
+    # Part 1
+    robot = Robot(instrs, 0)
+    run_robot(robot)
+    print("Part 1:")
+    print(f"{robot.get_n_tiles_painted()} tiles were painted at least once.")
+    print()
 
-# Part 1
-robot = Robot(instrs, 0)
-run_robot(robot)
-print("Part 1:")
-print(f"{robot.get_n_tiles_painted()} tiles were painted at least once.")
-print()
+    # Part 2
+    robot = Robot(instrs, 1)
+    run_robot(robot)
+    print("Part 2:")
+    print(f"The completed hull looks like:")
+    robot.print_hull()
 
-# Part 2
-robot = Robot(instrs, 1)
-run_robot(robot)
-print("Part 2:")
-print(f"The completed hull looks like:")
-robot.print_hull()
-
+if __name__ == "__main__":
+    main()
