@@ -3,8 +3,9 @@ import numpy as np
 import copy
 import time
 import os
-
-data_folder = Path(".").parent.resolve()
+from colorama import init
+init()
+data_folder = Path(__file__).parent.resolve()
 
 rg = np.random.default_rng()
 
@@ -89,13 +90,12 @@ class Game:
 
         tile_rows = np.array(tile_rows)
         tile_columns = np.array(tile_columns)
-        hull = np.zeros(
+        board = np.zeros(
             (row_dim[1] - row_dim[0] + 1, column_dim[1] - column_dim[0] + 1), dtype=int
         )
-        hull[tile_rows - row_dim[0], tile_columns - column_dim[0]] = colors
+        board[tile_rows - row_dim[0], tile_columns - column_dim[0]] = colors
 
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print(f"SCORE: {self.score}\t\t   BLOCKS LEFT: {self.get_n_block_tiles()}")    
+        print(f"\033[2;1HSCORE: {self.score}\t\t   BLOCKS LEFT: {self.get_n_block_tiles()}")    
         print(
             "\n".join(
                 [
@@ -105,12 +105,15 @@ class Game:
                     .replace("2", u"\u25A0")
                     .replace("3", u"\u2500")
                     .replace('4',u"\u25CF")
-                    for row in hull
+                    for row in board
                 ]
             )
         )
+        time.sleep(0.01)
+
     
     def run(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
         end_of_program = False
         output_type = ['x','y','type']
         output_index = 0
@@ -130,7 +133,6 @@ class Game:
                 if op_mode == 3:
                     self.prog.input = np.sign(self.ball_loc[0] - self.paddle_loc[0])
                     self.print_board()
-                    time.sleep(0.005)
                 operations[op_mode](self.prog, modes)
                 if op_mode == 4:
                     if output_type[output_index] == "x":
