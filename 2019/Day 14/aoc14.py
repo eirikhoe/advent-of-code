@@ -1,9 +1,7 @@
 from pathlib import Path
-import numpy as np
 import re
 from math import ceil
 import copy
-from collections import OrderedDict
 
 data_folder = Path(__file__).parent.resolve()
 file = data_folder / "day_14_input.txt"
@@ -18,7 +16,7 @@ class Ingredient:
 class Reaction:
     def __init__(self, recipe):
         ingredients = find_ingredients.findall(recipe)
-        for i in np.arange(len(ingredients)):
+        for i in range(len(ingredients)):
             ingredients[i] = ingredients[i].split(" ")
             ingredients[i] = Ingredient(ingredients[i][1], ingredients[i][0])
         self.reactants = dict(
@@ -40,7 +38,7 @@ class Reactions:
         total = set()
         if chemical == "ORE":
             return total
-        for name in self.reactions[chemical].reactants.keys():
+        for name in self.reactions[chemical].reactants:
             total = total.union(self.total_reactants(name)).union({name})
         return total
 
@@ -50,13 +48,13 @@ class Reactions:
         reaction = self.reactions[ingredient.name]
         multiple = ceil(ingredient.quantity / reaction.product.quantity)
         ingredients = copy.deepcopy(reaction.reactants)
-        for name in ingredients.keys():
+        for name in ingredients:
             ingredients[name] *= multiple
         while (len(ingredients.keys()) > 1) or (list(ingredients.keys())[0] != "ORE"):
-            for curr_ingredient_name in ingredients.keys():
+            for curr_ingredient_name in ingredients:
                 if curr_ingredient_name != "ORE":
                     total_reactants_other = set()
-                    for name in ingredients.keys():
+                    for name in ingredients:
                         if name != curr_ingredient_name:
                             total_reactants_other = total_reactants_other.union(
                                 self.total_reactants(name)
@@ -73,7 +71,7 @@ class Reactions:
             ingredients[ingredient_name]
             / self.reactions[ingredient_name].product.quantity
         )
-        for reactant_name in self.reactions[ingredient_name].reactants.keys():
+        for reactant_name in self.reactions[ingredient_name].reactants:
             added_reactant = (
                 multiple * self.reactions[ingredient_name].reactants[reactant_name]
             )
@@ -113,17 +111,17 @@ class Reactions:
 
 
 def main():
-    r = Reactions([Reaction(reaction) for reaction in file.read_text().split("\n")])
+    reactions = Reactions([Reaction(reaction) for reaction in file.read_text().split("\n")])
     ingredient = Ingredient("FUEL", 1)
     print("Part 1")
     print(
-        f"The minimum cost of producing one unit of FUEL is {r.get_ore_cost(ingredient)} ORE"
+        f"The minimum cost of producing one unit of FUEL is {reactions.get_ore_cost(ingredient)} ORE"
     )
-
+    print()
     print("Part 2")
     ore_reserve = 1000000000000
     print(
-        f"The maximum amount of FUEL that can be produced for\n{ore_reserve} ORE is {r.get_max_fuel(ore_reserve)} FUEL"
+        f"The maximum amount of FUEL that can be produced for\n{ore_reserve} ORE is {reactions.get_max_fuel(ore_reserve)} FUEL"
     )
 
 
