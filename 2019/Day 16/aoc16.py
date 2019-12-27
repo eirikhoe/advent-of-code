@@ -56,7 +56,8 @@ def main():
     
     print('Part 1')
     print(fft(digits,1,100,False))
-
+    print()
+    
     print('Part 2')
     print(fft(digits,10000,100,True))
 

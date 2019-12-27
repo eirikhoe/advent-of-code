@@ -254,7 +254,7 @@ class Droid:
                 ]
             )
         )
-
+        
     def find_move_dir(self):
         surroundings = np.zeros(4,dtype=int)
         for i,possible_direction in enumerate(self.rotate(self.last_move_dir,[0,90,180,270])):

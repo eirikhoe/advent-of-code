@@ -44,6 +44,8 @@ class IntCodeProgram:
     def reset(self):
         self.rel_base = 0
         self.instr_ptr = 0
+        self.input = None
+        self.output = None
         self.instructions = copy.deepcopy(self._init_instructions)
 
     def add(self, modes):
@@ -82,7 +84,6 @@ class IntCodeProgram:
     def jump_if_true(self, modes):
         n_params = 2
         modes = modes + [0] * (n_params - len(modes))
-
         if self.get(self.instr_ptr, modes[0]) > 0:
             self.instr_ptr = self.get(self.instr_ptr + 1, modes[1])
         else:
@@ -138,52 +139,22 @@ class IntCodeProgram:
         return op(self, modes)
 
 
-class Camera:
-    """A class for a Camera"""
+class Droid:
+    """A class for an Droid"""
 
-    def __init__(self, prog, camera=False):
-        self.map_str = ""
+    def __init__(self, prog, instructions):
         self.prog = IntCodeProgram(prog)
-        self.map = [[]]
-        self.run()
-        self.intersections = self.get_intersections()
-        self.input = self.get_input()
+        self.instructions = "\n".join(instructions) + "\n"
+        self.last_moments = ""
+        self.hull_damage = None
 
-    def get_intersections(self):
-        intersections = []
-        for j in range(1, len(self.map) - 1):
-            for i in range(1, len(self.map[0]) - 1):
-                if (
-                    self.map[j][i]
-                    == self.map[j - 1][i]
-                    == self.map[j + 1][i]
-                    == self.map[j][i + 1]
-                    == self.map[j][i - 1]
-                    == ord("#")
-                ):
-                    intersections.append([i, j])
-        return intersections
-
-    def find_sum_alignment_parameters(self):
-        total = 0
-        for intersection in self.intersections:
-            total += intersection[0] * intersection[1]
-        return total
-
-    def wake_droid(self):
-        self.prog.instructions[0] = 2
-
-    def get_input(self):
-        main = "A,A,B,C,C,A,B,C,A,B\n"
-        a = "L,12,L,12,R,12\n"
-        b = "L,8,L,8,R,12,L,8,L,8\n"
-        c = "L,10,R,8,R,12\n"
-        cam = "n\n"  # Camera not implemented
-        return [ord(char) for char in list(main + a + b + c + cam)]
+    def print_last_moments(self):
+        print(self.last_moments)
 
     def run(self):
         end_of_program = False
-        input_ctr = 0
+        self.prog.input = 1
+        instr_countr = 0
         while not end_of_program:
             digits = [int(d) for d in str(self.prog.get(self.prog.instr_ptr, 1))]
             if len(digits) == 1:
@@ -196,44 +167,56 @@ class Camera:
                 modes = digits[-3::-1]
                 self.prog.instr_ptr += 1
                 if op_mode == 3:
-                    if input_ctr < len(self.input):
-                        self.prog.input = self.input[input_ctr]
-                        input_ctr += 1
+                    self.prog.input = ord(self.instructions[instr_countr])
+                    instr_countr += 1
                 self.prog.operate(op_mode, modes)
                 if op_mode == 4:
-                    if self.prog.output < 128:
-                        self.map_str += chr(self.prog.output)
-                        if self.prog.output in [
-                            ord(char) for char in [".", "#", "^", ">", "<", "v", "X"]
-                        ]:
-                            if self.map[-1]:
-                                self.map[-1].append(self.prog.output)
-                            else:
-                                self.map[-1] = [self.prog.output]
-                        elif self.prog.output == ord("\n"):
-                            self.map.append([])
-
-        while not self.map[-1]:
-            self.map = self.map[:-1]
-        self.prog.reset()
+                    if self.prog.output > 127:
+                        self.hull_damage = self.prog.output
+                    else:
+                        self.last_moments += chr(self.prog.output)
+        self.print_last_moments()
 
 
-file = data_folder / "day_17_input.txt"
+file = data_folder / "day_21_input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 
 def main():
     print("Part 1")
-    camera = Camera(instrs)
-    print(camera.map_str)
-    print(
-        f"The sum of the alignment parameters is {camera.find_sum_alignment_parameters()}"
-    )
+    droid_instr = [
+        "NOT A J",
+        "NOT B T",
+        "OR T J",
+        "NOT C T",
+        "OR T J",
+        "AND D J",
+        "WALK",
+    ]
+    droid = Droid(instrs, droid_instr)
+    droid.run()
+    if droid.hull_damage is not None:
+        print(f"The springdroid reported {droid.hull_damage} hull damage")
     print()
+
     print("Part 2")
-    camera.wake_droid()
-    camera.run()
-    print(f"Robot dust collected: {camera.prog.output}")
+    droid_instr = [
+        "NOT A J",
+        "NOT B T",
+        "OR T J",
+        "NOT C T",
+        "OR T J",
+        "AND D J",
+        "OR J T",
+        "AND E T",
+        "OR H T",
+        "AND T J",
+        "RUN",
+    ]
+    droid = Droid(instrs, droid_instr)
+    droid.run()
+    if droid.hull_damage is not None:
+        print(f"The springdroid reported {droid.hull_damage} hull damage")
 
 
 if __name__ == "__main__":

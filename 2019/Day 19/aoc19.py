@@ -44,6 +44,8 @@ class IntCodeProgram:
     def reset(self):
         self.rel_base = 0
         self.instr_ptr = 0
+        self.input = None
+        self.output = None
         self.instructions = copy.deepcopy(self._init_instructions)
 
     def add(self, modes):
@@ -138,102 +140,117 @@ class IntCodeProgram:
         return op(self, modes)
 
 
-class Camera:
-    """A class for a Camera"""
-
-    def __init__(self, prog, camera=False):
-        self.map_str = ""
+class Beam:
+    def __init__(self, prog):
         self.prog = IntCodeProgram(prog)
-        self.map = [[]]
-        self.run()
-        self.intersections = self.get_intersections()
-        self.input = self.get_input()
+        self.map = dict()
 
-    def get_intersections(self):
-        intersections = []
-        for j in range(1, len(self.map) - 1):
-            for i in range(1, len(self.map[0]) - 1):
-                if (
-                    self.map[j][i]
-                    == self.map[j - 1][i]
-                    == self.map[j + 1][i]
-                    == self.map[j][i + 1]
-                    == self.map[j][i - 1]
-                    == ord("#")
-                ):
-                    intersections.append([i, j])
-        return intersections
+    def find_affected_area(self):
+        area = 0
+        for tile in self.map:
+            area = area + self.map[tile]
+        return area
 
-    def find_sum_alignment_parameters(self):
-        total = 0
-        for intersection in self.intersections:
-            total += intersection[0] * intersection[1]
-        return total
+    def find_closest_square(self, lim):
+        distance = int(1e8)
+        closest = None
+        for tile in self.map:
+            if (self.map[tile] == 1) and (self.map[(tile[0], tile[1] + 1)] == 0):
+                current_tile = tile
+                square_size = 0
+                while (current_tile in self.map) and (self.map[current_tile] == 1):
+                    square_size += 1
+                    current_tile = (current_tile[0] + 1, current_tile[1] - 1)
+                coord = (tile[0], tile[1] - square_size + 1)
+                if (square_size >= lim) and ((coord[0] + coord[1]) < distance):
+                    closest = coord
+                    distance = coord[0] + coord[1]
 
-    def wake_droid(self):
-        self.prog.instructions[0] = 2
+        return closest
 
-    def get_input(self):
-        main = "A,A,B,C,C,A,B,C,A,B\n"
-        a = "L,12,L,12,R,12\n"
-        b = "L,8,L,8,R,12,L,8,L,8\n"
-        c = "L,10,R,8,R,12\n"
-        cam = "n\n"  # Camera not implemented
-        return [ord(char) for char in list(main + a + b + c + cam)]
+    def print_map(self):
+        row_dim = [0, 0]
+        column_dim = [0, 0]
+        tile_rows = []
+        tile_columns = []
+        types = []
+        for tile in self.map:
+            if tile[0] > row_dim[1]:
+                row_dim[1] = tile[0]
+            elif tile[0] < row_dim[0]:
+                row_dim[0] = tile[0]
+            if tile[1] > column_dim[1]:
+                column_dim[1] = tile[1]
+            elif tile[1] < column_dim[0]:
+                column_dim[0] = tile[1]
+            tile_rows.append(tile[0])
+            tile_columns.append(tile[1])
+            types.append(self.map[tile])
 
-    def run(self):
-        end_of_program = False
-        input_ctr = 0
-        while not end_of_program:
-            digits = [int(d) for d in str(self.prog.get(self.prog.instr_ptr, 1))]
-            if len(digits) == 1:
-                op_mode = digits[-1]
-            else:
-                op_mode = digits[-2] * 10 + digits[-1]
-            if op_mode == 99:
-                end_of_program = True
-            else:
-                modes = digits[-3::-1]
-                self.prog.instr_ptr += 1
-                if op_mode == 3:
-                    if input_ctr < len(self.input):
-                        self.prog.input = self.input[input_ctr]
-                        input_ctr += 1
-                self.prog.operate(op_mode, modes)
-                if op_mode == 4:
-                    if self.prog.output < 128:
-                        self.map_str += chr(self.prog.output)
-                        if self.prog.output in [
-                            ord(char) for char in [".", "#", "^", ">", "<", "v", "X"]
-                        ]:
-                            if self.map[-1]:
-                                self.map[-1].append(self.prog.output)
+        tile_rows = np.array(tile_rows)
+        tile_columns = np.array(tile_columns)
+        map_array = np.full(
+            (row_dim[1] - row_dim[0] + 1, column_dim[1] - column_dim[0] + 1),
+            2,
+            dtype=int,
+        )
+        map_array[tile_rows - row_dim[0], tile_columns - column_dim[0]] = types
+        path = data_folder / "map.txt"
+        path.write_text(
+            "\n".join(
+                [
+                    "".join([str(d) for d in row])
+                    .replace("0", ".")
+                    .replace("1", "#")
+                    .replace("2", " ")
+                    for row in map_array
+                ]
+            )
+        )
+
+    def get_map(self, area):
+        for y in np.arange(area[0]):
+            if (y % 100) == 0:
+                print(y)
+            for x in np.arange(area[1]):
+                end_of_program = False
+                self.prog.reset()
+                curr_coord = 0
+                while not end_of_program:
+                    digits = [
+                        int(d) for d in str(self.prog.get(self.prog.instr_ptr, 1))
+                    ]
+                    if len(digits) == 1:
+                        op_mode = digits[-1]
+                    else:
+                        op_mode = digits[-2] * 10 + digits[-1]
+                    if op_mode == 99:
+                        end_of_program = True
+                    else:
+                        modes = digits[-3::-1]
+                        self.prog.instr_ptr += 1
+                        if op_mode == 3:
+                            if curr_coord == 0:
+                                self.prog.input = x
                             else:
-                                self.map[-1] = [self.prog.output]
-                        elif self.prog.output == ord("\n"):
-                            self.map.append([])
+                                self.prog.input = y
+                            curr_coord = 1 - curr_coord
 
-        while not self.map[-1]:
-            self.map = self.map[:-1]
-        self.prog.reset()
+                        self.prog.operate(op_mode, modes)
+                        if op_mode == 4:
+                            self.map[(y, x)] = self.prog.output
 
 
-file = data_folder / "day_17_input.txt"
+file = data_folder / "day_19_input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 
 def main():
-    print("Part 1")
-    camera = Camera(instrs)
-    print(camera.map_str)
-    print(
-        f"The sum of the alignment parameters is {camera.find_sum_alignment_parameters()}"
-    )
-    print()
-    print("Part 2")
-    camera.wake_droid()
-    camera.run()
-    print(f"Robot dust collected: {camera.prog.output}")
+    beam = Beam(instrs)
+    beam.get_map([1200, 1200])
+    beam.print_map()
+    print(beam.find_affected_area())
+    print(beam.find_closest_square(100))
 
 
 if __name__ == "__main__":

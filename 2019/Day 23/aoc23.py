@@ -44,6 +44,8 @@ class IntCodeProgram:
     def reset(self):
         self.rel_base = 0
         self.instr_ptr = 0
+        self.input = None
+        self.output = None
         self.instructions = copy.deepcopy(self._init_instructions)
 
     def add(self, modes):
@@ -82,7 +84,6 @@ class IntCodeProgram:
     def jump_if_true(self, modes):
         n_params = 2
         modes = modes + [0] * (n_params - len(modes))
-
         if self.get(self.instr_ptr, modes[0]) > 0:
             self.instr_ptr = self.get(self.instr_ptr + 1, modes[1])
         else:
@@ -138,52 +139,29 @@ class IntCodeProgram:
         return op(self, modes)
 
 
-class Camera:
-    """A class for a Camera"""
+class Computer:
 
-    def __init__(self, prog, camera=False):
-        self.map_str = ""
+    n_computers = 0
+    queue = []
+    nat_packet = []
+    sending = []
+    nat_sent_y = []
+    repeated_nan = False
+
+    def __init__(self, prog):
         self.prog = IntCodeProgram(prog)
-        self.map = [[]]
-        self.run()
-        self.intersections = self.get_intersections()
-        self.input = self.get_input()
+        self.has_ip = False
+        self.ip = Computer.n_computers
+        Computer.n_computers += 1
+        Computer.queue.append([])
+        Computer.sending.append([True] * 5)
 
-    def get_intersections(self):
-        intersections = []
-        for j in range(1, len(self.map) - 1):
-            for i in range(1, len(self.map[0]) - 1):
-                if (
-                    self.map[j][i]
-                    == self.map[j - 1][i]
-                    == self.map[j + 1][i]
-                    == self.map[j][i + 1]
-                    == self.map[j][i - 1]
-                    == ord("#")
-                ):
-                    intersections.append([i, j])
-        return intersections
-
-    def find_sum_alignment_parameters(self):
-        total = 0
-        for intersection in self.intersections:
-            total += intersection[0] * intersection[1]
-        return total
-
-    def wake_droid(self):
-        self.prog.instructions[0] = 2
-
-    def get_input(self):
-        main = "A,A,B,C,C,A,B,C,A,B\n"
-        a = "L,12,L,12,R,12\n"
-        b = "L,8,L,8,R,12,L,8,L,8\n"
-        c = "L,10,R,8,R,12\n"
-        cam = "n\n"  # Camera not implemented
-        return [ord(char) for char in list(main + a + b + c + cam)]
-
-    def run(self):
+    def do_instruction(self):
         end_of_program = False
-        input_ctr = 0
+        given_x = False
+        output_countr = 0
+        address = None
+        output_package = [-1, -1]
         while not end_of_program:
             digits = [int(d) for d in str(self.prog.get(self.prog.instr_ptr, 1))]
             if len(digits) == 1:
@@ -196,44 +174,66 @@ class Camera:
                 modes = digits[-3::-1]
                 self.prog.instr_ptr += 1
                 if op_mode == 3:
-                    if input_ctr < len(self.input):
-                        self.prog.input = self.input[input_ctr]
-                        input_ctr += 1
+                    if not self.has_ip:
+                        self.prog.input = self.ip
+                        self.has_ip = True
+                    else:
+                        if len(Computer.queue[self.ip]) == 0:
+                            self.prog.input = -1
+                            end_of_program = True
+                        else:
+                            self.prog.input = Computer.queue[self.ip].pop(0)
+                            if given_x:
+                                end_of_program = True
+                            given_x = ~given_x
                 self.prog.operate(op_mode, modes)
                 if op_mode == 4:
-                    if self.prog.output < 128:
-                        self.map_str += chr(self.prog.output)
-                        if self.prog.output in [
-                            ord(char) for char in [".", "#", "^", ">", "<", "v", "X"]
-                        ]:
-                            if self.map[-1]:
-                                self.map[-1].append(self.prog.output)
-                            else:
-                                self.map[-1] = [self.prog.output]
-                        elif self.prog.output == ord("\n"):
-                            self.map.append([])
+                    if output_countr == 0:
+                        address = self.prog.output
+                    else:
+                        output_package[output_countr - 1] = self.prog.output
+                    output_countr += 1
+                    if output_countr == 3:
+                        if address < Computer.n_computers:
+                            Computer.queue[address].append(output_package[0])
+                            Computer.queue[address].append(output_package[1])
+                        elif address == 255:
+                            if len(Computer.nat_packet) == 0:
+                                print(
+                                    f"The first NAT packet has Y-value {output_package[1]}"
+                                )
+                            Computer.nat_packet = output_package.copy()
+                        end_of_program = True
+        Computer.sending[self.ip] = [*Computer.sending[self.ip][1:], op_mode == 4]
 
-        while not self.map[-1]:
-            self.map = self.map[:-1]
-        self.prog.reset()
+        if (
+            (self.ip == (Computer.n_computers - 1))
+            and (sum([sum(sending) for sending in Computer.sending]) == 0)
+            and (sum([len(queue) for queue in Computer.queue]) == 0)
+        ):
+            if len(Computer.nat_packet) == 2:
+                Computer.queue[0] = Computer.nat_packet.copy()
+                if Computer.nat_packet[1] in Computer.nat_sent_y:
+                    print(
+                        f"The first repeated Y value sent from the NAT is {Computer.nat_packet[1]}"
+                    )
+                    Computer.repeated_nan = True
+                Computer.nat_sent_y.append(Computer.nat_packet[1])
+            for i in range(Computer.n_computers):
+                Computer.sending[i] = [True] * 5
 
 
-file = data_folder / "day_17_input.txt"
+file = data_folder / "day_23_input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 
 def main():
-    print("Part 1")
-    camera = Camera(instrs)
-    print(camera.map_str)
-    print(
-        f"The sum of the alignment parameters is {camera.find_sum_alignment_parameters()}"
-    )
-    print()
-    print("Part 2")
-    camera.wake_droid()
-    camera.run()
-    print(f"Robot dust collected: {camera.prog.output}")
+    computers = []
+    for i in range(50):
+        computers.append(Computer(instrs))
+    while not Computer.repeated_nan:
+        for i in range(50):
+            computers[i].do_instruction()
 
 
 if __name__ == "__main__":
