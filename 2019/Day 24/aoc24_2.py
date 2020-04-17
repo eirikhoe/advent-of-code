@@ -97,6 +97,7 @@ def main():
     n_min = 200
     for i in range(n_min):
         eris.advance_state()
+    eris.print_state()
     print(f"After {n_min} minutes there are {len(eris.bugs)} bugs present.")
 
 
