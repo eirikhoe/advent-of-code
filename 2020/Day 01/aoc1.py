@@ -1,32 +1,36 @@
 from pathlib import Path
-
+import numpy as np
 data_folder = Path(".").resolve()
 
-def find_two_factors(entries,total):
-    for i,entry in enumerate(entries):
-        if total-entry in entries[i+1:]:
-            return entry, total-entry
-    return None
+def find_factors(entries,total,n_factors):
+    if n_factors == 1:
+        if total in entries:
+            return [total]
+        else:
+            return None
 
-def find_three_factors(entries,total):
     for i,entry in enumerate(entries[:-1]):
-        last_two = find_two_factors(entries[i+1:],total-entry)
-        if last_two:
-            return entry, last_two[0], last_two[1]
+        factors = find_factors(entries[i+1:],total-entry,n_factors-1)
+        if factors:
+            factors.append(entry)
+            return factors
     return None
+    
+
 
 def main():
     data = data_folder.joinpath("input.txt").read_text()
     data = [int(d) for d in data.split("\n")]
     total = 2020
-    first, second = find_two_factors(data,total)
+    
+    factors = find_factors(data,total,2)
     print("Part 1")
-    print(f"The product of the two entries that sum to {total} is {first*second}")
+    print(f"The product of the two entries that sum to {total} is {np.prod(factors)}")
     print()
 
-    first, second, third = find_three_factors(data,total)
+    factors = find_factors(data,total,3)
     print("Part 2")
-    print(f"The product of the three entries that sum to {total} is {first*second*third}")
+    print(f"The product of the three entries that sum to {total} is {np.prod(factors)}")
     print()
 
 if __name__ == "__main__":
