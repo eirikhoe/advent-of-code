@@ -8,10 +8,11 @@ reg_password = re.compile(r"(\d+)-(\d+) ([a-z]): ([a-z]+)")
 
 def get_password_components(password_info):
     match = reg_password.match(password_info)
-    int_1 = int(match.groups()[0])
-    int_2 = int(match.groups()[1])
-    char = match.groups()[2]
-    pwd = match.groups()[3]
+    components = match.groups()
+    int_1 = int(components[0])
+    int_2 = int(components[1])
+    char = components[2]
+    pwd = components[3]
     return int_1, int_2, char, pwd
 
 
