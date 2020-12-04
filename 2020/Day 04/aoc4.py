@@ -6,12 +6,12 @@ hair_re = re.compile(r"^#[0-9a-f]{6}$")
 pid_re = re.compile(r"^\d{9}$")
 
 
-def validate_year(passport, field, min_year, max_year):
-    if len(passport[field]) != 4:
+def validate_year(field, min_year, max_year):
+    if len(field) != 4:
         return False
 
     try:
-        year = int(passport[field])
+        year = int(field)
     except:
         return False
 
@@ -35,13 +35,13 @@ def check_passport_strict(passport):
     if not check_passport_laxed(passport):
         return False
 
-    if not validate_year(passport, "byr", 1920, 2002):
+    if not validate_year(passport["byr"], 1920, 2002):
         return False
 
-    if not validate_year(passport, "iyr", 2010, 2020):
+    if not validate_year(passport["iyr"], 2010, 2020):
         return False
 
-    if not validate_year(passport, "eyr", 2020, 2030):
+    if not validate_year(passport["eyr"], 2020, 2030):
         return False
 
     try:
