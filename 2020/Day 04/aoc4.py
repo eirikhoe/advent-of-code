@@ -1,8 +1,8 @@
 from pathlib import Path
 import re
 
-height_re = re.compile(r"(\d+)(in|cm)")
-hair_re = re.compile(r"#[0-9a-f]{6}")
+height_re = re.compile(r"^(\d+)(in|cm)$")
+hair_re = re.compile(r"^#[0-9a-f]{6}$")
 pid_re = re.compile(r"^\d{9}$")
 
 
