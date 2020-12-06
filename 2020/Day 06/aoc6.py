@@ -22,9 +22,7 @@ def count_total(group_answers, count_type="any"):
 def main():
     data_folder = Path(".").resolve()
     data = data_folder.joinpath("input.txt").read_text()
-    group_answers = [
-        [set(ans) for ans in gr.split("\n")] for gr in data.split("\n\n")
-    ]
+    group_answers = [[set(ans) for ans in gr.split("\n")] for gr in data.split("\n\n")]
 
     print("Part 1")
     print("The sum of questions to which anyone answered 'yes'")
