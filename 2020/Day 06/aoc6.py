@@ -2,11 +2,11 @@ from pathlib import Path
 
 
 def count_yes_anyone(group_answer):
-    return len(group_answer[0].union(*group_answer[1:]))
+    return len(set.union(*group_answer))
 
 
 def count_yes_everyone(group_answer):
-    return len(group_answer[0].intersection(*group_answer[1:]))
+    return len(set.intersection(*group_answer))
 
 
 count_yes = {"any": count_yes_anyone, "all": count_yes_everyone}
