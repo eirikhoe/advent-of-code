@@ -8,6 +8,7 @@ def count_yes_any(group_answer):
 def count_yes_all(group_answer):
     return len(set.intersection(*group_answer))
 
+
 def main():
     data_folder = Path(".").resolve()
     data = data_folder.joinpath("input.txt").read_text()
