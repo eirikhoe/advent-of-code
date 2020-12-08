@@ -31,7 +31,7 @@ class Console:
         "nop": nop,
     }
 
-    def fix_prog(self):
+    def run_fixed_prog(self):
         for i, instr in enumerate(self.instrs):
             instrs = deepcopy(self.instrs)
             if instr[0] == "jmp":
@@ -73,14 +73,14 @@ def main():
     print("Part 1:")
     console = Console(data)
     console.run_prog()
-    print("Immediately before any instruction is executed a second time") 
+    print("Immediately before any instruction is executed a second time")
     print(f"the value in the accumulator is {console.acc}")
     print()
 
     print("Part 2:")
-    (i, acc) = console.fix_prog()
-    print(f"After fixing the program by changing line {i} the value in") 
-    print(f"the accumulator after the program terminates is {console.acc}")
+    (i, acc) = console.run_fixed_prog()
+    print(f"After fixing the program by changing line {i} the value in")
+    print(f"the accumulator after the program terminates is {acc}")
 
 
 if __name__ == "__main__":
