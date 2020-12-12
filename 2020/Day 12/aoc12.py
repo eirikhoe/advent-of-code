@@ -63,7 +63,7 @@ def find_ferry_distance_with_waypoint(instrs):
 
 
 def main():
-    data_folder = Path(".").resolve()
+    data_folder = Path(__file__).parent.resolve()
     data = data_folder.joinpath("input.txt").read_text()
     instrs = data.split("\n")
     
