@@ -1,10 +1,10 @@
 from pathlib import Path
-from math import gcd
+from math import gcd, prod
 
 
 def find_earliest_bus(min_depart_time, bus_ids):
     valid_buses = [int(id) for id in bus_ids if id != "x"]
-    
+    print(prod(valid_buses))
     depart_time = min_depart_time
     while True:
         for bus_id in valid_buses:
