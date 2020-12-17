@@ -131,10 +131,8 @@ def main():
         f = Cubes(data, n_dims=n_dims)
         f.evolve(6, show=False)
         n_active = f.get_n_active()
-        print(
-            f"For {n_dims} dimensions {n_active} cubes are left in the active "
-        )
-        print(f"state after the sixth cycle")
+        print(f"For {n_dims} dimensions {n_active} cubes are left in ")
+        print(f"the active state after the sixth cycle")
         print()
 
 
