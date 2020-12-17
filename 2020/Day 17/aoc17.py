@@ -125,9 +125,6 @@ def main():
     data_folder = Path(__file__).parent.resolve()
     data = data_folder.joinpath("input.txt").read_text()
 
-    f = Cubes(data, n_dims=4)
-    f.evolve(2, show=True)
-
     for info in [[1, 3], [2, 4]]:
         print(f"Part {info[0]}")
         n_dims = info[1]
