@@ -28,7 +28,7 @@ def evaluate_eq_pres(equation):
     return levels[0][0]
 
 
-def evaluate_eq_add_first(equation):
+def evaluate_add_first(equation):
     levels = [[0]]
     for term in equation:
         if term == "(":
@@ -66,13 +66,10 @@ def main():
     print("Part 2")
     total = 0
     for equation in equations:
-        total += evaluate_eq_add_first(equation)
+        total += evaluate_add_first(equation)
     print("Evaluating the expression on each line of the homework ")
     print("with addition evaluated before multiplication, the sum ")
     print(f"of the resulting values is {total}")
-
-    # print(f"")
-    # print()
 
 
 if __name__ == "__main__":
