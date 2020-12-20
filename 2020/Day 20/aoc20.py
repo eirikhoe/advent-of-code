@@ -1,7 +1,4 @@
-from os import DirEntry
 from pathlib import Path
-from copy import deepcopy
-from typing import NamedTuple
 import numpy as np
 from collections import Counter
 from itertools import product
@@ -12,40 +9,31 @@ ROTATIONS = (0, 90, 180, 270)
 
 def get_tile_borders(tile, dir="all"):
     borders = []
-    if dir in ["up", "all"]:
-        border = min(
-            [border_to_id(tile[0, :]), border_to_id(tile[0, ::-1])]
-        )
-        borders.append(border)
-    if dir in ["down", "all"]:
-        border = min(
-            [border_to_id(tile[-1, :]), border_to_id(tile[-1, ::-1])]
-        )
-        borders.append(border)
-    if dir in ["left", "all"]:
-        border = min(
-            [border_to_id(tile[:, 0]), border_to_id(tile[::-1, 0])]
-        )
-        borders.append(border)
-    if dir in ["right", "all"]:
-        border = min(
-            [border_to_id(tile[:, -1]), border_to_id(tile[::-1, -1])]
-        )
-        borders.append(border)
+    border = None
+    for d in DIRECTIONS:
+        if dir in [d, "all"]:
+            id = tile_to_id(tile, d, False)
+            id_flip = tile_to_id(tile, d, True)
+            border = min(id, id_flip)
+            borders.append(border)
     if dir != "all":
-        return borders[0]
+        return border
     return borders
 
 
-def tile_to_id(tile, dir):
+def tile_to_id(tile, dir, reverse=False):
+
+    step = 1
+    if reverse:
+        step = -1
     if dir == "up":
-        return border_to_id(tile[0, :])
+        return border_to_id(tile[0, ::step])
     if dir == "down":
-        return border_to_id(tile[-1, :])
+        return border_to_id(tile[-1, ::step])
     if dir == "left":
-        return border_to_id(tile[:, 0])
+        return border_to_id(tile[::step, 0])
     if dir == "right":
-        return border_to_id(tile[:, -1])
+        return border_to_id(tile[::step, -1])
 
 
 def border_to_id(border):
@@ -75,13 +63,12 @@ class Image:
         self.borders = dict()
         self.n_tiles = 0
         self.tile_dim = None
-
         self.corners = set()
         self.edges = set()
         self.interiors = set()
         self.border_counter = None
         self.corner_prod = None
-        id = None
+
         i = 0
         lines = data.split("\n")
         while i < len(lines):
@@ -121,36 +108,37 @@ class Image:
         self._assemble_image()
         self.n_monsters = self._mark_sea_monsters()
 
-    def _mark_sea_monsters(self):
-        orientations = list(product(ROTATIONS, [True, False]))
-        n_monsters = 0
-        for rot, flip in orientations:
-            found_pattern = False
-            image = rotate(self.image, rot, flip)
-            n_monsters = 0
-            for row in range(image.shape[0] - self.pattern.shape[0] + 1):
-                for col in range(
-                    image.shape[1] - self.pattern.shape[1] + 1
-                ):
-                    part = image[
-                        row : row + self.pattern.shape[0],
-                        col : col + self.pattern.shape[1],
-                    ]
-                    if part[self.pattern].all():
-                        part[self.pattern] = 2
-                        n_monsters += 1
-                        found_pattern = True
-            if found_pattern:
-                break
-        self.image = image
-        return n_monsters
-
     def _check_direction_unique(self, tile, direction):
         id = get_tile_borders(tile, direction)
         return self.border_counter[id] == 1
 
-    def find_habitat_roughness(self):
-        return np.sum(self.image == 1)
+    def _solve(self):
+        borders = []
+        for id in self.borders:
+            borders.extend(self.borders[id])
+        self.border_counter = Counter(borders)
+
+        max_edge_count = 0
+        for id in self.borders:
+            n_unique = 0
+            for border in self.borders[id]:
+                c = self.border_counter[border]
+                n_unique += c == 1
+                if c > max_edge_count:
+                    max_edge_count = c
+            if n_unique == 2:
+                self.corners.add(id)
+            elif n_unique == 1:
+                self.edges.add(id)
+            elif n_unique == 0:
+                self.interiors.add(id)
+        assert max_edge_count == 2
+
+        self.corner_prod = self.find_corner_product()
+
+        dim_range = range(self.puzzle_dim)
+        for col, row in product(dim_range, dim_range):
+            self._solve_coord(row, col)
 
     def _solve_coord(self, row, col):
         unique_edges = (
@@ -166,6 +154,7 @@ class Image:
             pieces = self.edges
         if unique_edges == 2:
             pieces = self.corners
+
         orientations = list(product(ROTATIONS, [True, False]))
         cand = None
         tile = None
@@ -204,7 +193,47 @@ class Image:
         pieces.remove(cand)
         self.tiles[cand] = tile
 
-    def print_tile(self, image):
+    def _assemble_image(self):
+        im_col = 0
+        for col in range(self.puzzle_dim):
+            im_row = 0
+            for row in range(self.puzzle_dim):
+                tile = np.copy(self.tiles[self.solution[row, col]])[
+                    1:-1, 1:-1
+                ]
+                self.image[
+                    im_row : im_row + tile.shape[0],
+                    im_col : im_col + tile.shape[1],
+                ] = tile
+                im_row += tile.shape[0]
+            im_col += tile.shape[1]
+
+    def _mark_sea_monsters(self):
+        orientations = list(product(ROTATIONS, [True, False]))
+        n_monsters = 0
+        image = np.copy(self.image)
+        for rot, flip in orientations:
+            found_pattern = False
+            image = rotate(self.image, rot, flip)
+            n_monsters = 0
+            for row in range(image.shape[0] - self.pattern.shape[0] + 1):
+                for col in range(
+                    image.shape[1] - self.pattern.shape[1] + 1
+                ):
+                    part = image[
+                        row : row + self.pattern.shape[0],
+                        col : col + self.pattern.shape[1],
+                    ]
+                    if part[self.pattern].all():
+                        part[self.pattern] = 2
+                        n_monsters += 1
+                        found_pattern = True
+            if found_pattern:
+                break
+        self.image = image
+        return n_monsters
+
+    def print_image(self, image):
         line = []
         char = {1: "#", 0: ".", 2: "O"}
         for row in range(image.shape[0]):
@@ -222,48 +251,10 @@ class Image:
             corner_prod *= corner
         return corner_prod
 
-    def _assemble_image(self):
-        im_col = 0
-        for col in range(self.puzzle_dim):
-            im_row = 0
-            for row in range(self.puzzle_dim):
-                tile = np.copy(self.tiles[self.solution[row, col]])[
-                    1:-1, 1:-1
-                ]
-                s = tile.shape
-                self.image[
-                    im_row : im_row + s[0], im_col : im_col + s[1]
-                ] = tile
-                im_row += s[0]
-            im_col += s[1]
+    def find_habitat_roughness(self):
+        return np.sum(self.image == 1)
 
-    def _solve(self):
-        borders = []
-        for id in self.borders:
-            borders.extend(self.borders[id])
-        self.border_counter = Counter(borders)
 
-        max_edge_count = 0
-        for id in self.borders:
-            n_unique = 0
-            for border in self.borders[id]:
-                c = self.border_counter[border]
-                n_unique += c == 1
-                if c > max_edge_count:
-                    max_edge_count = c
-            if n_unique == 2:
-                self.corners.add(id)
-            elif n_unique == 1:
-                self.edges.add(id)
-            elif n_unique == 0:
-                self.interiors.add(id)
-        assert max_edge_count == 2
-
-        self.corner_prod = self.find_corner_product()
-
-        dim_range = range(self.puzzle_dim)
-        for col, row in product(dim_range, dim_range):
-            self._solve_coord(row, col)
 
 
 def main():
@@ -281,7 +272,7 @@ def main():
     print()
 
     print(f"Final image with {t.n_monsters} marked sea monsters:")
-    t.print_tile(t.image)
+    t.print_image(t.image)
 
 
 if __name__ == "__main__":
