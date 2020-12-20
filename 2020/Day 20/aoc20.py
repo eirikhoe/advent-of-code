@@ -11,29 +11,30 @@ ROTATIONS = (0, 90, 180, 270)
 
 
 def get_tile_borders(tile, dir="all"):
-    res = []
-    res.append(
-        min([border_to_id(tile[0, :]), border_to_id(tile[0, ::-1])])
-    )
-    res.append(
-        min([border_to_id(tile[-1, :]), border_to_id(tile[-1, ::-1])])
-    )
-    res.append(
-        min([border_to_id(tile[:, 0]), border_to_id(tile[::-1, 0])])
-    )
-    res.append(
-        min([border_to_id(tile[:, -1]), border_to_id(tile[::-1, -1])])
-    )
-    if dir == "up":
-        return res[0]
-    if dir == "down":
-        return res[1]
-    if dir == "left":
-        return res[2]
-    if dir == "right":
-        return res[3]
-    if dir == "all":
-        return res
+    borders = []
+    if dir in ["up", "all"]:
+        border = min(
+            [border_to_id(tile[0, :]), border_to_id(tile[0, ::-1])]
+        )
+        borders.append(border)
+    if dir in ["down", "all"]:
+        border = min(
+            [border_to_id(tile[-1, :]), border_to_id(tile[-1, ::-1])]
+        )
+        borders.append(border)
+    if dir in ["left", "all"]:
+        border = min(
+            [border_to_id(tile[:, 0]), border_to_id(tile[::-1, 0])]
+        )
+        borders.append(border)
+    if dir in ["right", "all"]:
+        border = min(
+            [border_to_id(tile[:, -1]), border_to_id(tile[::-1, -1])]
+        )
+        borders.append(border)
+    if dir != "all":
+        return borders[0]
+    return borders
 
 
 def tile_to_id(tile, dir):
@@ -148,7 +149,7 @@ class Image:
         id = get_tile_borders(tile, direction)
         return self.border_counter[id] == 1
 
-    def find_sea_roughness(self):
+    def find_habitat_roughness(self):
         return np.sum(self.image == 1)
 
     def _solve_coord(self, row, col):
@@ -276,7 +277,7 @@ def main():
     print()
 
     print("Part 2")
-    print(f"The habitats's roughness is {t.find_sea_roughness()}")
+    print(f"The habitat's roughness is {t.find_habitat_roughness()}")
     print()
 
     print(f"Final image with {t.n_monsters} marked sea monsters:")
