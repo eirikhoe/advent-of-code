@@ -66,9 +66,7 @@ def main():
     final = play(cups, n_moves, total_cups=n_cups, n_neighbours=2)
     print("Part 2")
     print(f"After {n_moves} moves with {n_cups} cups the cups with ")
-    print(
-        f"labels {final[0]} and {final[1]} are immediately clockwise "
-    )
+    print(f"labels {final[0]} and {final[1]} are immediately clockwise ")
     print(f"of cup 1. Multiplying their labels give {final[0]*final[1]}")
     print()
 
