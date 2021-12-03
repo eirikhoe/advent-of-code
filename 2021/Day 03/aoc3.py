@@ -41,10 +41,11 @@ def find_rating(data, rating_type):
         zeros_indicies = []
         for j in range(n_numbers):
             if data[j][i] == "1":
-                n_ones += 1
                 ones_indices.append(j)
             else:
                 zeros_indicies.append(j)
+        n_ones = len(ones_indices)
+
         if (rating_type == "co2") ^ (n_ones >= (n_numbers / 2)):
             del_indicies = zeros_indicies
         else:
