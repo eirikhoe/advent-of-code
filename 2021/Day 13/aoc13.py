@@ -39,7 +39,7 @@ def print_paper(paper):
     s = ""
     for line in paper:
         for char in line:
-            s += "#" if char else "."
+            s += "\u25AE" if char else " "
         s += "\n"
     print(s)
 
