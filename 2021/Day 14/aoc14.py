@@ -1,5 +1,4 @@
 from pathlib import Path
-import bisect
 from collections import Counter, defaultdict
 
 data_folder = Path(".").resolve()
@@ -15,7 +14,7 @@ def parse_data(data):
 
     rule_to_rule = defaultdict(list)
     for pattern in rules:
-        patterns = ["".join([pattern[0], rules[pattern]]), "".join([rules[pattern], pattern[1]])]
+        patterns = [pattern[0] + rules[pattern], rules[pattern] + pattern[1]]
         for new_pattern in patterns:
             if new_pattern in rules:
                 rule_to_rule[pattern].append(new_pattern)
