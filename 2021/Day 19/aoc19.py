@@ -1,7 +1,6 @@
 from pathlib import Path
 import numpy as np
 import itertools
-from copy import deepcopy
 
 data_folder = Path(".").resolve()
 
@@ -45,6 +44,7 @@ def align_all_beacon_maps(beacon_maps):
         for j in range(1, n_beacon_maps):
             if j in used:
                 continue
+            print(j)
             res = try_to_align(beacon_maps[used[ind]], beacon_maps[j])
             if res is not None:
                 align_recipes.append([ind, *res])
