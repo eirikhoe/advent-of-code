@@ -112,7 +112,7 @@ def run_intcode(instrs, input_values, instr_ptr=0):
     return None, None, op_mode
 
 
-with open("day_7_input.txt", "r") as file:
+with open("input.txt", "r") as file:
     orig_instrs = [int(instr) for instr in file.read().split(",")]
 
 max_signal = -int(1e20)

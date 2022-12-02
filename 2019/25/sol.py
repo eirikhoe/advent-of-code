@@ -174,7 +174,7 @@ class Droid:
         print(self.output)
 
 
-file = data_folder / "day_25_input.txt"
+file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 

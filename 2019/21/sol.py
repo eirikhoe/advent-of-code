@@ -178,7 +178,7 @@ class Droid:
         self.print_last_moments()
 
 
-file = data_folder / "day_21_input.txt"
+file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 

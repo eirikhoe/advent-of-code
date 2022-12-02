@@ -1,6 +1,6 @@
 import numpy as np
 
-with open("day_8_input.txt", "r") as file:
+with open("input.txt", "r") as file:
     pixels = [int(pixel) for pixel in file.read().strip()]
 
 image_size = [6, 25]

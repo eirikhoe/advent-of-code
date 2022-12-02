@@ -133,7 +133,7 @@ class Maze:
 
 
 def main():
-    file = data_folder / "day_20_input.txt"
+    file = data_folder / "input.txt"
     maze = Maze(file)
     print(f"It takes {maze.find_exit()} steps to reach the ZZ exit.")
 

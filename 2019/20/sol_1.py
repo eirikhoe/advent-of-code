@@ -80,7 +80,7 @@ class Maze:
 
 
 def main():
-    file = data_folder / "day_20_input.txt"
+    file = data_folder / "input.txt"
     maze = Maze(file)
 
     for key in maze.portals:

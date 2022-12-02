@@ -223,7 +223,7 @@ class Computer:
                 Computer.sending[i] = [True] * 5
 
 
-file = data_folder / "day_23_input.txt"
+file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 

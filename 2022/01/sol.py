@@ -14,10 +14,11 @@ def main():
     sorted_total_calories = sorted(map(sum,elves))
 
     print("Part 1")
-    print(sorted_total_calories[-1])
+    print(f"The elf with the most calories is carrying {sorted_total_calories[-1]}")
+    print()
 
     print("Part 2")
-    print(sum(sorted_total_calories[-3:]))
+    print(f"The three elves with the most calories are carrying {sum(sorted_total_calories[-3:])}")
 
 
 if __name__ == "__main__":

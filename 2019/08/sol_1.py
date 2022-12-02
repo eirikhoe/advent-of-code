@@ -1,6 +1,6 @@
 import numpy as np
 
-with open("day_8_input.txt", "r") as file:
+with open("input.txt", "r") as file:
     pixels = [int(pixel) for pixel in file.read().strip()]
 
 image = np.reshape(pixels, (-1, 6, 25))

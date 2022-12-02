@@ -51,7 +51,7 @@ def fft(digits,repetitions,phases,use_offset=False):
     return "".join([str(d) for d in digits[offset : offset + 8]])
 
 def main():
-    file = data_folder / "day_16_input.txt"
+    file = data_folder / "input.txt"
     digits = np.array([int(d) for d in list(file.read_text())])
     
     print('Part 1')

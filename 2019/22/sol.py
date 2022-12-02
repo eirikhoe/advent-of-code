@@ -94,7 +94,7 @@ class Deck:
 
 
 def main():
-    file = data_folder / "day_22_input.txt"
+    file = data_folder / "input.txt"
     deck = Deck(10007, file)
     n_shuffles = 1
     x = 2019

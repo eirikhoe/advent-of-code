@@ -149,7 +149,7 @@ def run_intcode(prog):
         end_of_program = perform_instruction(prog)
 
 
-file = data_folder / "day_9_input.txt"
+file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 

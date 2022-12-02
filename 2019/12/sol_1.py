@@ -33,7 +33,7 @@ def calculate_energy(positions,n_steps):
 def main():
     data_folder = Path(".").resolve()
     find_coords = re.compile(r"<x=(-?\d+), y=(-?\d+), z=(-?\d+)>")
-    data = data_folder.joinpath("day_12_input.txt").read_text()
+    data = data_folder.joinpath("input.txt").read_text()
 
     positions = np.array(
         [[int(d) for d in position] for position in find_coords.findall(data)]

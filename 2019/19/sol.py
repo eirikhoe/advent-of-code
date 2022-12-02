@@ -241,7 +241,7 @@ class Beam:
                             self.map[(y, x)] = self.prog.output
 
 
-file = data_folder / "day_19_input.txt"
+file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
 

@@ -92,7 +92,7 @@ class Eris:
 
 
 def main():
-    file = data_folder / "day_24_input.txt"
+    file = data_folder / "input.txt"
     eris = Eris(file)
     n_min = 200
     for i in range(n_min):

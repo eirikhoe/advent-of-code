@@ -53,7 +53,7 @@ class Eris:
 
 
 def main():
-    file = data_folder / "day_24_input.txt"
+    file = data_folder / "input.txt"
     eris = Eris(file)
     eris.advance_state_til_repeat()
 

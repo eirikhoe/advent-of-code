@@ -4,7 +4,7 @@ from math import ceil
 import copy
 
 data_folder = Path(__file__).parent.resolve()
-file = data_folder / "day_14_input.txt"
+file = data_folder / "input.txt"
 find_ingredients = re.compile(r"(\d+ \w+)+")
 
 
