@@ -1,5 +1,4 @@
 from pathlib import Path
-import bisect
 import string
 from collections import deque
 
@@ -40,7 +39,7 @@ def get_candidates(pos, scan):
 
 def find_shortest_path(scan, start, end):
     queue = deque([start])
-    dist = [[-1 for i in range(len(scan[0]))] for j in range(len(scan))]
+    dist = [[-1 for _ in range(len(scan[0]))] for _ in range(len(scan))]
     dist[start[0]][start[1]] = 0
     while queue:
         curr = queue.pop()
