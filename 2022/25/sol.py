@@ -15,10 +15,11 @@ def parse_data(data):
 
 def snafu_to_decimal(snafu_number):
     decimal_number = 0
-    n = len(snafu_number) - 1
-    for i, digit in enumerate(snafu_number):
+    base = 1
+    for digit in reversed(snafu_number):
         decimal_digit = digit_snafu_to_decimal[digit]
-        decimal_number += (snafu_base ** (n - i)) * decimal_digit
+        decimal_number += decimal_digit * base
+        base *= snafu_base
     return decimal_number
 
 
