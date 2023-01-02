@@ -3,14 +3,14 @@ from pathlib import Path
 data_folder = Path(".").resolve()
 
 
-def parse_data(data):
-    numbers = data.split("\n")
-    return numbers
-
-
 digit_snafu_to_decimal = {"2": 2, "1": 1, "0": 0, "-": -1, "=": -2}
 digit_decimal_to_snafu = {d: s for s, d in digit_snafu_to_decimal.items()}
 snafu_base = 5
+
+
+def parse_data(data):
+    numbers = data.split("\n")
+    return numbers
 
 
 def snafu_to_decimal(snafu_number):
