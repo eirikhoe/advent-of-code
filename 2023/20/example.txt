@@ -1,0 +1,16 @@
+broadcaster -> kg, dz, ff, bq
+%mg -> dp
+%dp -> mh
+&gf -> rx
+%nd -> jx
+&qr -> dp, bq, nd, rz, mg, qk, mh
+&qk -> gf
+%xk -> qr, sf
+%mh -> rz
+%rz -> tj
+%bq -> qr, mg
+%sf -> qr
+%pf -> xk, qr
+%zz -> pf, qr
+%jx -> qr, zz
+%tj -> nd, qr

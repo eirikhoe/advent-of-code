@@ -51,7 +51,7 @@ def main():
     print()
 
     print("Part 2")
-    print("Nothing to solve")
+    print("Nothing to solve.")
     print()
 
 
