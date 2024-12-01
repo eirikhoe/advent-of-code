@@ -72,7 +72,6 @@ def check_passport_strict(passport):
 
 
 def count_valid_passports(passports, strict=False):
-
     n_valid = 0
     for passport in passports:
         if strict:

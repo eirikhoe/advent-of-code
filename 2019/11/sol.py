@@ -36,7 +36,7 @@ class IntCodeProgram:
 
 class Robot:
     """A class for a hull painting robot"""
-    
+
     def __init__(self, prog, initial_panel_color=0):
         self.location = (0, 0)
         self.panel_colors = {(0, 0): initial_panel_color}
@@ -99,14 +99,14 @@ class Robot:
             (row_dim[1] - row_dim[0] + 1, column_dim[1] - column_dim[0] + 1), dtype=int
         )
         hull[tile_rows - row_dim[0], tile_columns - column_dim[0]] = colors
-        
+
         # Assumes text color is white on the system
         print(
             "\n".join(
                 [
                     "".join([str(d) for d in row])
                     .replace("0", " ")
-                    .replace("1", u"\u2588")
+                    .replace("1", "\u2588")
                     for row in hull
                 ]
             )
@@ -240,7 +240,8 @@ def run_robot(robot):
 file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
-def main(): 
+
+def main():
     # Part 1
     robot = Robot(instrs, 0)
     run_robot(robot)
@@ -254,6 +255,7 @@ def main():
     print("Part 2:")
     print(f"The completed hull looks like:")
     robot.print_hull()
+
 
 if __name__ == "__main__":
     main()

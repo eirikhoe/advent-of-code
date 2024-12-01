@@ -62,6 +62,7 @@ class Disk:
         self.n_regions = 0
         self.regions = np.zeros((Disk.size, Disk.size), dtype=int)
         self.find_regions()
+
     def build_grid(self):
         for row in range(Disk.size):
             hash_string = f"{self.key_string}-{row}"
@@ -87,7 +88,9 @@ class Disk:
         while len(queue) > 0:
             point = queue.popleft()
             for candidate in _get_candidates(point):
-                if (max(candidate[0],candidate[1]) >= Disk.size) or (min(candidate[0],candidate[1]) < 0):
+                if (max(candidate[0], candidate[1]) >= Disk.size) or (
+                    min(candidate[0], candidate[1]) < 0
+                ):
                     continue
 
                 if (not self.regions[candidate]) and self.grid[candidate]:
@@ -120,7 +123,7 @@ class Disk:
                     if not k:
                         s += symbols[k]
                     else:
-                        s += chr((k % (126-49)) + 49)
+                        s += chr((k % (126 - 49)) + 49)
 
             else:
                 for k in self.grid[y]:
@@ -141,9 +144,7 @@ def main():
 
     print("Part 2")
     d.print_grid(regions=True)
-    print(
-        f"There are {d.n_regions} regions on the disk"
-    )
+    print(f"There are {d.n_regions} regions on the disk")
 
 
 if __name__ == "__main__":

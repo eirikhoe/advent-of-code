@@ -6,13 +6,14 @@ from collections import defaultdict
 mask_re = re.compile(r"mask = ([X01]{36})")
 mem_re = re.compile(r"mem\[(\d+)\] = (\d+)")
 
+
 def _make_binary(dec_int, length):
     return list(bin(dec_int)[2:].rjust(length, "0"))
+
 
 class BitMask:
     """A class for the state of a bitmask program"""
 
-        
     def __init__(self, data):
         self.memory = defaultdict(lambda: 0)
         data = data.split("\n")
@@ -50,7 +51,7 @@ class BitMask:
 
         floating_indicies = np.arange(self.n_bits)[value == "X"]
         n_floating_bits = len(floating_indicies)
-        for i in range(2 ** n_floating_bits):
+        for i in range(2**n_floating_bits):
             rep_bits = _make_binary(i, n_floating_bits)
             value[floating_indicies] = rep_bits
             dec_value = int("".join(value), 2)
@@ -76,9 +77,7 @@ def main():
     print("Part 2")
     prog = BitMask(data)
     prog.run_program(version=2)
-    print(
-        f"The sum of all values left in memory for version 2 is {prog.sum_memory()}"
-    )
+    print(f"The sum of all values left in memory for version 2 is {prog.sum_memory()}")
 
 
 if __name__ == "__main__":

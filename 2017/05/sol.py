@@ -1,5 +1,6 @@
 from pathlib import Path
 import re
+
 data_folder = Path(".").resolve()
 
 
@@ -11,7 +12,7 @@ def main():
 
     org_jumps = jumps.copy()
     print("Part 1")
-    
+
     n_offsets = len(jumps)
     n_steps = 0
     index = 0
@@ -20,7 +21,7 @@ def main():
         jumps[index] += 1
         index += jump
         n_steps += 1
-    
+
     print(f"It takes {n_steps} steps to to reach the exit")
     print()
 
@@ -36,9 +37,10 @@ def main():
             jumps[index] -= 1
         index += jump
         n_steps += 1
-    
+
     print(f"It takes {n_steps} steps to to reach the exit")
     print()
+
 
 if __name__ == "__main__":
     main()

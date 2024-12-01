@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 class Device:
     """A Class for the state of an IntCode program"""
 
@@ -75,7 +76,14 @@ class Device:
                 else:
                     self.instrs[ind][0] = "jnz"
 
-    operations = {"cpy": cpy, "inc": inc, "dec": dec, "jnz": jnz, "tgl": tgl, "out": out}
+    operations = {
+        "cpy": cpy,
+        "inc": inc,
+        "dec": dec,
+        "jnz": jnz,
+        "tgl": tgl,
+        "out": out,
+    }
 
     def operate(self):
         instr = self.instrs[self.instr_ptr]
@@ -97,18 +105,19 @@ def main():
     print("Part 1:")
     # From analyzing the code, if the intial value in register a is called a0 the code will
     # repeatedly output the binary representation of a0 + 2550 (from smallest to largest bit,
-    # i.e. from right to left). 
-    # 
+    # i.e. from right to left).
+    #
     # Since the binary representation of 2550 is 100111110110 it is clear that we want a0 + 2550
     # to have the binary representation 101010101010
-    
+
     d = Device(data)
-    d.reg['a'] = int('101010101010',2)-2550
-    print(f"The smallest positive initial value in register a that will generate the clock signal is {d.reg['a']}")
+    d.reg["a"] = int("101010101010", 2) - 2550
+    print(
+        f"The smallest positive initial value in register a that will generate the clock signal is {d.reg['a']}"
+    )
 
     # Uncomment to verify
     # d.run_prog()
-    
 
 
 if __name__ == "__main__":

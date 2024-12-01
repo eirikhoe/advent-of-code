@@ -37,15 +37,11 @@ def play(decks, recursive=False):
     game_id = _make_game_id(decks)
     while min(n_cards) > 0:
         played.add(game_id)
-        
+
         for player_id in decks:
             cards[player_id - 1] = decks[player_id].popleft()
-        
-        if (
-            (not recursive)
-            or (cards[0] >= n_cards[0])
-            or (cards[1] >= n_cards[1])
-        ):
+
+        if (not recursive) or (cards[0] >= n_cards[0]) or (cards[1] >= n_cards[1]):
             if cards[0] > cards[1]:
                 winner = 1
             else:
@@ -54,9 +50,7 @@ def play(decks, recursive=False):
             rec_decks = dict()
             for player_id in decks:
                 rec_deck = deepcopy(list(decks[player_id]))
-                rec_decks[player_id] = deque(
-                    rec_deck[: cards[player_id - 1]]
-                )
+                rec_decks[player_id] = deque(rec_deck[: cards[player_id - 1]])
 
             winner, _ = play(rec_decks, True)
 

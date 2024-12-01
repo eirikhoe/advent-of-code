@@ -52,7 +52,6 @@ class Cubes:
         self.cubes = new_state
 
     def print_layout(self, ret=False):
-
         # find area
         max_lims = [None] * self.n_dims
         min_lims = [None] * self.n_dims
@@ -81,8 +80,7 @@ class Cubes:
         ]
 
         n_digits = [
-            max(len(str(abs(dims[i][0]))), len(str(abs(dims[i][1]))))
-            for i in range(2)
+            max(len(str(abs(dims[i][0]))), len(str(abs(dims[i][1])))) for i in range(2)
         ]
         xs = range(dims[0][0], dims[0][1] + 1)
         str_xs = [str(abs(x)).rjust(n_digits[0], " ") for x in xs]
@@ -96,8 +94,7 @@ class Cubes:
         line = []
         for add_coords in add_coordss:
             header_list = [
-                f"{add_coord_names[i]}={c}"
-                for i, c in enumerate(add_coords)
+                f"{add_coord_names[i]}={c}" for i, c in enumerate(add_coords)
             ]
             line.append(", ".join(header_list))
             line += x_headers

@@ -143,7 +143,6 @@ def perform_instruction(prog):
 
 
 def run_intcode(prog):
-
     end_of_program = False
     while not end_of_program:
         end_of_program = perform_instruction(prog)

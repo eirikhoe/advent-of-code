@@ -38,12 +38,16 @@ def main():
 
     sub_prod = part1(data)
     print("Part 1")
-    print(f"If we multiply the final horizontal position by the final depth we get {sub_prod}")
+    print(
+        f"If we multiply the final horizontal position by the final depth we get {sub_prod}"
+    )
     print()
 
     sub_prod = part2(data)
     print("Part 2")
-    print(f"If we multiply the final horizontal position by the final depth we get {sub_prod}")
+    print(
+        f"If we multiply the final horizontal position by the final depth we get {sub_prod}"
+    )
     print()
 
 

@@ -51,7 +51,10 @@ def find_surface_area_droplet(droplet, only_external):
     exposed = []
     for cube in droplet:
         exposed.extend(find_exposed_sides(cube, droplet))
-    dims = [[min(d), max(d)] for d in [[d[i] for d in droplet] for i in range(len(droplet[0]))]]
+    dims = [
+        [min(d), max(d)]
+        for d in [[d[i] for d in droplet] for i in range(len(droplet[0]))]
+    ]
     surface_area = len(exposed)
     if not only_external:
         return surface_area

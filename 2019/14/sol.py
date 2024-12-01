@@ -13,6 +13,7 @@ class Ingredient:
         self.name = name
         self.quantity = int(quantity)
 
+
 class Reaction:
     def __init__(self, recipe):
         ingredients = find_ingredients.findall(recipe)
@@ -27,6 +28,7 @@ class Reaction:
         )
         self.product = ingredients[-1]
         self.n_reactants = len(self.reactants)
+
 
 class Reactions:
     def __init__(self, reactions):
@@ -111,7 +113,9 @@ class Reactions:
 
 
 def main():
-    reactions = Reactions([Reaction(reaction) for reaction in file.read_text().split("\n")])
+    reactions = Reactions(
+        [Reaction(reaction) for reaction in file.read_text().split("\n")]
+    )
     ingredient = Ingredient("FUEL", 1)
     print("Part 1")
     print(

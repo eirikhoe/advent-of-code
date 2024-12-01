@@ -16,7 +16,7 @@ def find_earliest_bus(min_depart_time, bus_ids):
 
 def find_first_streak(bus_ids):
     buses = [(int(id), n) for n, id in enumerate(bus_ids) if id != "x"]
-    
+
     start_time = 0
     bus_id = 0
     skip_size = 1

@@ -1,7 +1,7 @@
 from pathlib import Path
 
-def compute_seat_id(seat):
 
+def compute_seat_id(seat):
     seat_id = ""
     for c in seat[:7]:
         seat_id += str(int(c == "B"))
@@ -31,6 +31,7 @@ def main():
         if seat_ids[i + 1] - seat_ids[i] == 2:
             print(f"Your seat has seat ID {seat_ids[i]+1}")
             break
+
 
 if __name__ == "__main__":
     main()

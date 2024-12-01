@@ -52,7 +52,9 @@ def align_all_beacon_maps(beacon_maps):
                 new_beacon_maps.append(beacon_maps[j])
         ind += 1
     beacon_maps = new_beacon_maps
-    scanner_locations = [np.array([0, 0, 0]).reshape((1, -1)) for _ in range(n_beacon_maps)]
+    scanner_locations = [
+        np.array([0, 0, 0]).reshape((1, -1)) for _ in range(n_beacon_maps)
+    ]
     for j in range(n_beacon_maps - 2, -1, -1):
         beacon_maps, scanner_locations = align_and_add(
             beacon_maps, scanner_locations, j, *align_recipes[j]
@@ -113,7 +115,9 @@ def align_beacon_map(fixed_beacon_map, beacon_map):
 
 
 def is_alignment_found(fixed_beacon_map, beacon_map):
-    unq, counts = np.unique(np.vstack([fixed_beacon_map, beacon_map]), axis=0, return_counts=True)
+    unq, counts = np.unique(
+        np.vstack([fixed_beacon_map, beacon_map]), axis=0, return_counts=True
+    )
     aligned = unq[counts == 2].shape[0] >= 12
     return aligned
 

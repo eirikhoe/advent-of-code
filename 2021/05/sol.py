@@ -16,7 +16,9 @@ def parse_data(data):
 
 
 def count_overlap_points(lines, include_diag):
-    grid = np.zeros((np.max(lines[:, [0, 2]]) + 1, np.max(lines[:, [1, 3]]) + 1), dtype=int)
+    grid = np.zeros(
+        (np.max(lines[:, [0, 2]]) + 1, np.max(lines[:, [1, 3]]) + 1), dtype=int
+    )
 
     horisontal = np.equal(lines[:, 1], lines[:, 3])
     hor_rows = lines[horisontal]
@@ -51,12 +53,16 @@ def main():
 
     print("Part 1")
     n_overlap = count_overlap_points(data, False)
-    print(f"At least two lines overlap in {n_overlap} points when not including diagonal lines")
+    print(
+        f"At least two lines overlap in {n_overlap} points when not including diagonal lines"
+    )
     print()
 
     print("Part 2")
     n_overlap = count_overlap_points(data, True)
-    print(f"At least two lines overlap in {n_overlap} points when including diagonal lines")
+    print(
+        f"At least two lines overlap in {n_overlap} points when including diagonal lines"
+    )
     print()
 
 

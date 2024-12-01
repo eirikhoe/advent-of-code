@@ -59,7 +59,7 @@ def count_times_instructions_ghost(instructions, network):
         assert distance == end_distances[end]
         distances.append(distance)
 
-    #answer is the lowest common multiple of all loop distances
+    # answer is the lowest common multiple of all loop distances
     total_distance = math.lcm(*distances)
     return total_distance
 

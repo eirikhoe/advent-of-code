@@ -33,7 +33,7 @@ class Judge:
 
     def judge(self, n):
         names = list(self.generators.keys())
-        mod_factor = 2 ** 16
+        mod_factor = 2**16
         for i in range(n):
             for name in self.generators:
                 self.generators[name].generate()

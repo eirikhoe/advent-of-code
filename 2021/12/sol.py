@@ -27,7 +27,9 @@ def find_cave_paths(connected_to, visited, lower_twice_allowed, lower_twice_alre
             else:
                 lower_twice = True
         new_visited = visited + [candidate]
-        n_paths += find_cave_paths(connected_to, new_visited, lower_twice_allowed, lower_twice)
+        n_paths += find_cave_paths(
+            connected_to, new_visited, lower_twice_allowed, lower_twice
+        )
     return n_paths
 
 
@@ -37,12 +39,16 @@ def main():
 
     print("Part 1")
     n_paths = find_cave_paths(connected_to, ["start"], False, False)
-    print(f"There are {n_paths} paths through this cave system that visit small caves at most once.")
+    print(
+        f"There are {n_paths} paths through this cave system that visit small caves at most once."
+    )
     print()
 
     print("Part 2")
     n_paths = find_cave_paths(connected_to, ["start"], True, False)
-    print(f"There are {n_paths} paths through this cave system that visit at most one small cave twice.")
+    print(
+        f"There are {n_paths} paths through this cave system that visit at most one small cave twice."
+    )
     print()
 
 

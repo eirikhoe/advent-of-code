@@ -6,7 +6,7 @@ reg = re.compile(r"(\w+) (inc|dec) (-?\d+) if (\w+) (==|!=|>=|<=|<|>) (-?\d+)")
 
 
 class Instr:
-    def __init__(self, mod_reg,mod,cond_reg,cond,cond_val):
+    def __init__(self, mod_reg, mod, cond_reg, cond, cond_val):
         self.mod_reg = mod_reg
         self.mod = mod
         self.cond_reg = cond_reg
@@ -22,9 +22,9 @@ class Program:
             m = reg.match(line)
             mod_reg = m.group(1)
             self.registers[mod_reg] = 0
-            if m.group(2) == 'inc':
+            if m.group(2) == "inc":
                 mod = int(m.group(3))
-            elif m.group(2) == 'dec':
+            elif m.group(2) == "dec":
                 mod = -int(m.group(3))
             else:
                 raise RuntimeError
@@ -33,43 +33,43 @@ class Program:
             self.registers[cond_reg] = 0
             cond = m.group(5)
             cond_val = int(m.group(6))
-            self.instructions.append(Instr(mod_reg,mod,cond_reg,cond,cond_val))
-        
+            self.instructions.append(Instr(mod_reg, mod, cond_reg, cond, cond_val))
+
         self.all_time_max = self.max_reg()
 
     def run(self):
-        
         for instr in self.instructions:
-            if instr.cond == '==':
+            if instr.cond == "==":
                 if self.registers[instr.cond_reg] == instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
-            elif instr.cond == '!=':
+                    self.registers[instr.mod_reg] += instr.mod
+            elif instr.cond == "!=":
                 if self.registers[instr.cond_reg] != instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
-            elif instr.cond == '>=':
+                    self.registers[instr.mod_reg] += instr.mod
+            elif instr.cond == ">=":
                 if self.registers[instr.cond_reg] >= instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
-            elif instr.cond == '<=':
+                    self.registers[instr.mod_reg] += instr.mod
+            elif instr.cond == "<=":
                 if self.registers[instr.cond_reg] <= instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
-            elif instr.cond == '>':
+                    self.registers[instr.mod_reg] += instr.mod
+            elif instr.cond == ">":
                 if self.registers[instr.cond_reg] > instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
-            elif instr.cond == '<':
+                    self.registers[instr.mod_reg] += instr.mod
+            elif instr.cond == "<":
                 if self.registers[instr.cond_reg] < instr.cond_val:
-                    self.registers[instr.mod_reg] += instr.mod 
+                    self.registers[instr.mod_reg] += instr.mod
             curr_max = self.max_reg()
             if curr_max > self.all_time_max:
                 self.all_time_max = curr_max
-            
+
     def max_reg(self):
         max_val = None
         for reg_name in self.registers:
             reg_val = self.registers[reg_name]
             if (max_val is None) or (reg_val > max_val):
-                max_val = reg_val  
+                max_val = reg_val
 
         return max_val
+
 
 def main():
     data = data_folder.joinpath("input.txt").read_text()

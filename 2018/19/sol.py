@@ -2,20 +2,21 @@ from pathlib import Path
 import re
 from copy import deepcopy
 from bisect import bisect_left
+
+
 class Device:
     """A Class for the state of an IntCode program"""
 
-    def __init__(self,data,reg = [0,0,0,0,0,0]):
-        data = data.split('\n')
+    def __init__(self, data, reg=[0, 0, 0, 0, 0, 0]):
+        data = data.split("\n")
         self.reg = reg
-        self.instr_ptr = int(re.match(r"#ip (\d)",data[0]).group(1))
+        self.instr_ptr = int(re.match(r"#ip (\d)", data[0]).group(1))
         self.instrs = []
         for line in data[1:]:
             line = line.split(" ")
-            for i in range(1,len(line)):
+            for i in range(1, len(line)):
                 line[i] = int(line[i])
-            self.instrs.append(line) 
-
+            self.instrs.append(line)
 
     def addr(self, instr):
         self.reg[instr[2]] = self.reg[instr[0]] + self.reg[instr[1]]
@@ -82,21 +83,20 @@ class Device:
         "eqir": eqir,
         "eqri": eqri,
         "eqrr": eqrr,
-
     }
 
-    def operate(self,op_name,instr):
+    def operate(self, op_name, instr):
         op = Device.operations[op_name]
-        op(self,instr)
+        op(self, instr)
 
     def run_prog(self):
-
         while 0 <= self.reg[self.instr_ptr] < len(self.instrs):
             instr = self.instrs[self.reg[self.instr_ptr]]
-            self.operate(instr[0],instr[1:])
+            self.operate(instr[0], instr[1:])
             self.reg[self.instr_ptr] += 1
 
-def main(): 
+
+def main():
     data_folder = Path(".").resolve()
     data = data_folder.joinpath("input.txt").read_text()
 
@@ -112,7 +112,7 @@ def main():
 
     number = 10551370
     reg_zero_val = 0
-    for i in range(1,number+1):
+    for i in range(1, number + 1):
         if number % i == 0:
             reg_zero_val += i
     print(f"The value {reg_zero_val} is in register 0 once the program has run.")

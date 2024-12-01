@@ -43,7 +43,10 @@ def _compute_scenic_score(coord, trees):
 
     score = 1
     for ax in [0, 1]:
-        ranges = [range(coord[ax] - 1, 0, -1), range(coord[ax] + 1, len(rel_trees[ax]) - 1)]
+        ranges = [
+            range(coord[ax] - 1, 0, -1),
+            range(coord[ax] + 1, len(rel_trees[ax]) - 1),
+        ]
         for d in [0, 1]:
             part_score = 0
             for i in ranges[d]:

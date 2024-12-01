@@ -24,4 +24,3 @@ n_you = ancestors_you.index(first_common_ancestor)
 n_san = ancestors_san.index(first_common_ancestor)
 
 print(n_you + n_san)
-

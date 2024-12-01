@@ -73,7 +73,9 @@ def make_state(robots, resources, time, time_limit):
 def find_limits(robots, resources, time, time_limit):
     rem_time = time_limit - time
     min_lim = resources["geode"] + robots["geode"] * rem_time
-    max_lim = resources["geode"] + int((robots["geode"] + (rem_time - 1) / 2) * rem_time)
+    max_lim = resources["geode"] + int(
+        (robots["geode"] + (rem_time - 1) / 2) * rem_time
+    )
     return min_lim, max_lim
 
 
@@ -143,7 +145,9 @@ def main():
     quality_level_sum = 0
     for id, amount in enumerate(geode_amounts):
         quality_level_sum += (id + 1) * amount
-    print(f"The sum of the quality levels for all the blueprints in the list is {quality_level_sum}.")
+    print(
+        f"The sum of the quality levels for all the blueprints in the list is {quality_level_sum}."
+    )
     print()
 
     print("Part 2")

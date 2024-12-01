@@ -51,7 +51,10 @@ def make_cube(board):
         has_side.append([])
         for j in range(n_cols // face_len):
             has_side[-1].append(
-                int(board[i * face_len + face_len // 2][j * face_len + face_len // 2] != " ")
+                int(
+                    board[i * face_len + face_len // 2][j * face_len + face_len // 2]
+                    != " "
+                )
             )
             if (has_side[-1][-1] != 0) and first_side:
                 start = (i, j)
@@ -145,8 +148,12 @@ def move(board, instr, pos, dir, journey, cube_map, face_len):
                         break
                 standard_dir = turn_left(dir, cube_map[side][1])
                 new_side, standard_rot = standard_cube_map[side][standard_dir]
-                mapped_dir = turn_left(standard_dir, (standard_rot - cube_map[new_side][1]) % 360)
-                total_rot = (cube_map[side][1] + standard_rot - cube_map[new_side][1]) % 360
+                mapped_dir = turn_left(
+                    standard_dir, (standard_rot - cube_map[new_side][1]) % 360
+                )
+                total_rot = (
+                    cube_map[side][1] + standard_rot - cube_map[new_side][1]
+                ) % 360
                 new_double_side_coord = list(turn_left(double_side_coord, total_rot))
                 i = 0 if mapped_dir[0] != 0 else 1
                 new_double_side_coord[i] = -new_double_side_coord[i]

@@ -79,7 +79,9 @@ def main():
 
     print("Part 2")
     shortest_path = find_best_trail(scan, end)
-    print(f"The shortest path from any start with elevation a has length {shortest_path}.")
+    print(
+        f"The shortest path from any start with elevation a has length {shortest_path}."
+    )
     print()
 
 

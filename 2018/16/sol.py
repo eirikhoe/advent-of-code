@@ -1,12 +1,14 @@
 from pathlib import Path
 from numpy import argsort
 import re
+
 data_folder = Path(__file__).parent.resolve()
+
 
 class Device:
     """A Class for the state of an IntCode program"""
 
-    def __init__(self, reg = [0,0,0,0]):
+    def __init__(self, reg=[0, 0, 0, 0]):
         self.reg = reg
 
     def get(self, ptr, mode):
@@ -25,7 +27,6 @@ class Device:
             return ptr
         elif mode == 0:
             return self.get(ptr, 1)
-
 
     def addr(self, instr):
         self.reg[instr[2]] = self.reg[instr[0]] + self.reg[instr[1]]
@@ -92,14 +93,11 @@ class Device:
         0: eqir,
         9: eqri,
         10: eqrr,
-
     }
 
-    def operate(self,op_code,instr):
+    def operate(self, op_code, instr):
         op = Device.operations[op_code]
-        op(self,instr)
-
-
+        op(self, instr)
 
 
 file = data_folder / "input.txt"
@@ -110,7 +108,7 @@ reg = re.compile(r"(\d+) (\d+) (\d+) (\d+)")
 rega = re.compile(r"After:  \[(\d+), (\d+), (\d+), (\d+)\]")
 
 
-def main(): 
+def main():
     before = []
     instrs = []
     after = []
@@ -119,10 +117,14 @@ def main():
         m = regb.match(lines[line_num])
         if m is None:
             break
-        before.append([int(d) for d in m.group(1,2,3,4)])
-        instrs.append([int(d) for d in reg.match(lines[line_num+1]).group(1,2,3,4)])
-        after.append([int(d) for d in rega.match(lines[line_num+2]).group(1,2,3,4)])
-        line_num+=4
+        before.append([int(d) for d in m.group(1, 2, 3, 4)])
+        instrs.append(
+            [int(d) for d in reg.match(lines[line_num + 1]).group(1, 2, 3, 4)]
+        )
+        after.append(
+            [int(d) for d in rega.match(lines[line_num + 2]).group(1, 2, 3, 4)]
+        )
+        line_num += 4
     d = Device()
     n_samples = len(instrs)
     matching_three = 0
@@ -131,10 +133,10 @@ def main():
         possible_opcodes = set()
         for op in range(16):
             d.reg = before[i].copy()
-            d.operate(op,instrs[i][1:])
-            
+            d.operate(op, instrs[i][1:])
+
             match = True
-            for j,_ in enumerate(after[i]):
+            for j, _ in enumerate(after[i]):
                 if after[i][j] != d.reg[j]:
                     match = False
                     break
@@ -145,13 +147,12 @@ def main():
             opcodes[instrs[i][0]] = possible_opcodes
         else:
             opcodes[instrs[i][0]] &= possible_opcodes
-            
-        matching_three += int(len(possible_opcodes) >= 3)
-    
-    max_len = 2
-    
-    while max_len > 1:
 
+        matching_three += int(len(possible_opcodes) >= 3)
+
+    max_len = 2
+
+    while max_len > 1:
         for key in opcodes:
             if len(opcodes[key]) == 1:
                 for key2 in opcodes:
@@ -161,7 +162,7 @@ def main():
         for key in opcodes:
             if len(opcodes[key]) > max_len:
                 max_len = len(opcodes[key])
-     
+
     print(f"There are {matching_three} samples matching three or more opcodes.\n")
     actual_code = []
     temp_code = []
@@ -179,14 +180,15 @@ def main():
     while line_num < len(lines):
         m = reg.match(lines[line_num])
         if m:
-            instrs.append([int(d) for d in m.group(1,2,3,4)])
+            instrs.append([int(d) for d in m.group(1, 2, 3, 4)])
         line_num += 1
 
     d = Device()
     for instr in instrs:
-        d.operate(instr[0],instr[1:])
-    
+        d.operate(instr[0], instr[1:])
+
     print(f"The value {d.reg[0]} is in register 0 once the program has run.")
+
 
 if __name__ == "__main__":
     main()

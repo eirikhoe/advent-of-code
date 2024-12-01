@@ -30,7 +30,9 @@ def count_grown_polymer_element(template, rules, rule_to_rule, n_steps):
             if (template[i] == pattern[0]) and (template[i + 1] == pattern[1]):
                 rule_hits[pattern] += 1
     for _ in range(n_steps):
-        poly_count, rule_hits = do_pair_insertion(poly_count, rules, rule_to_rule, rule_hits)
+        poly_count, rule_hits = do_pair_insertion(
+            poly_count, rules, rule_to_rule, rule_hits
+        )
     sorted_elements = poly_count.most_common()
     return sorted_elements[0][1] - sorted_elements[-1][1]
 

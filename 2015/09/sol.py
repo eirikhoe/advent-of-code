@@ -7,12 +7,12 @@ import re
 data_folder = Path(__file__).parent.resolve()
 reg = re.compile(r"(\w+) to (\w+) = (\d+)")
 
+
 class Travel:
-    
     def __init__(self, data):
         distances = []
         locations = set()
-        for line in data.split('\n'):
+        for line in data.split("\n"):
             m = reg.match(line)
             assert m is not None
             new_data = list(m.groups())
@@ -21,10 +21,10 @@ class Travel:
             for i in range(2):
                 locations.add(new_data[i])
         self.n_locs = len(locations)
-        self.locs = dict(zip(locations,np.arange(self.n_locs)))
+        self.locs = dict(zip(locations, np.arange(self.n_locs)))
         self.dist = self.compute_distance_matrix(distances)
-        
-    def compute_distance_matrix(self,distances):
+
+    def compute_distance_matrix(self, distances):
         n = self.n_locs
         distance_matrix = np.zeros((n, n), dtype=int)
         for d in distances:

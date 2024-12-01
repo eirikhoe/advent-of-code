@@ -70,7 +70,9 @@ def main():
 
     print("Part 1")
     risk_level_sum = compute_risk_level_sum(height_map)
-    print(f"The sum of the risk levels of all low points on the heightmap is {risk_level_sum}")
+    print(
+        f"The sum of the risk levels of all low points on the heightmap is {risk_level_sum}"
+    )
     print()
 
     print("Part 2")

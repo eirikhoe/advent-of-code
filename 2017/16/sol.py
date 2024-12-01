@@ -9,49 +9,48 @@ data_folder = Path(".").resolve()
 class Dance:
     def __init__(self, data, n):
         self.int_order = np.arange(n)
-        self.moves = data.split(',')
+        self.moves = data.split(",")
         self.n_dancers = n
         self.int_moves = None
         self.rename = None
-
 
     def dance(self):
         if self.int_moves is None:
             init_order = list(range(self.n_dancers))
             self.int_moves = deque(init_order)
-            self.str_moves = np.copy(init_order)  
+            self.str_moves = np.copy(init_order)
             for move in self.moves:
-                if move[0] == 's':
+                if move[0] == "s":
                     self.spin(move[1:])
-                elif move[0] == 'x':
+                elif move[0] == "x":
                     self.exchange(move[1:])
-                elif move[0] == 'p':
+                elif move[0] == "p":
                     self.partner(move[1:])
-            self.rename = dict(zip(init_order,self.str_moves)) 
+            self.rename = dict(zip(init_order, self.str_moves))
             self.int_moves = np.array(list(self.int_moves))
-        
-        self.int_order = self.int_order[self.int_moves]
-        for i,prog in enumerate(self.int_order):
-            self.int_order[i]= self.rename[prog]
 
-    def spin(self,instr):
+        self.int_order = self.int_order[self.int_moves]
+        for i, prog in enumerate(self.int_order):
+            self.int_order[i] = self.rename[prog]
+
+    def spin(self, instr):
         rot = int(instr)
         self.int_moves.rotate(rot)
-    
-    def exchange(self,instr):
-        pos = [int(d) for d in instr.split('/')]
+
+    def exchange(self, instr):
+        pos = [int(d) for d in instr.split("/")]
         temp = self.int_moves[pos[0]]
         self.int_moves[pos[0]] = self.int_moves[pos[1]]
         self.int_moves[pos[1]] = temp
 
-    def partner(self,instr):
-        progs = [ord(d)-97 for d in instr.split('/')]
-        pos = [-1,-1]
+    def partner(self, instr):
+        progs = [ord(d) - 97 for d in instr.split("/")]
+        pos = [-1, -1]
         ind = 0
-        for j,prog in enumerate(self.str_moves):
+        for j, prog in enumerate(self.str_moves):
             if prog in progs:
                 pos[ind] = j
-                ind += 1  
+                ind += 1
         temp = self.str_moves[pos[0]]
         self.str_moves[pos[0]] = self.str_moves[pos[1]]
         self.str_moves[pos[1]] = temp
@@ -59,15 +58,14 @@ class Dance:
     def order(self):
         s = ""
         for prog_int in self.int_order:
-            s += chr(prog_int+97)
+            s += chr(prog_int + 97)
         return s
 
-    
-    def repeated_dance(self,n):
+    def repeated_dance(self, n):
         k = 0
         powers = []
         bin_n = [int(d) for d in list(bin(n)[2:])[::-1]]
-        for j,bit in enumerate(bin_n):
+        for j, bit in enumerate(bin_n):
             if bit:
                 powers.append(j)
         if self.int_moves is None:
@@ -92,21 +90,20 @@ class Dance:
             rename_powers.append(curr_rename.copy())
             power_ind += 1
 
-        final_order =  np.arange(self.n_dancers)
+        final_order = np.arange(self.n_dancers)
         for moves in int_dance_powers:
             final_order = final_order[moves]
-        
+
         for rename in rename_powers:
-            for i,prog in enumerate(final_order):
-                final_order[i]= rename[prog]
+            for i, prog in enumerate(final_order):
+                final_order[i] = rename[prog]
 
         self.int_order = final_order
 
 
-
 def main():
     data = data_folder.joinpath("input.txt").read_text()
-    d = Dance(data,16)
+    d = Dance(data, 16)
 
     print("Part 1")
     d.dance()
@@ -117,8 +114,7 @@ def main():
     n_dances = int(1e9)
     d.repeated_dance(n_dances)
     print(f"The programs are standing in the order {d.order()} after {n_dances} dances")
-    
-    
+
 
 if __name__ == "__main__":
     main()

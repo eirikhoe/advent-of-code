@@ -69,12 +69,16 @@ class Dirac_Game:
             for die, n_outcomes in zip(range(3, 10), [1, 3, 6, 7, 6, 3, 1]):
                 for standing in self.games:
                     new_standing = list(standing)
-                    new_standing[2 * i] = ((standing[2 * i] + die - 1) % self.board_size) + 1
+                    new_standing[2 * i] = (
+                        (standing[2 * i] + die - 1) % self.board_size
+                    ) + 1
                     new_standing[2 * i + 1] += new_standing[2 * i]
                     if new_standing[2 * i + 1] >= self.win_score:
                         self.won[i] += self.games[standing] * n_outcomes
                     else:
-                        new_games[tuple(new_standing)] += self.games[standing] * n_outcomes
+                        new_games[tuple(new_standing)] += (
+                            self.games[standing] * n_outcomes
+                        )
             self.games = new_games
 
     def play(self):

@@ -143,7 +143,11 @@ class Rocks:
             return self.simulate_falling_rocks(n_rocks)
         periods_needed = missing // period
         remainder = missing % period
-        self.height = initial_height + periods_needed * height_deltas[-1] + height_deltas[remainder]
+        self.height = (
+            initial_height
+            + periods_needed * height_deltas[-1]
+            + height_deltas[remainder]
+        )
 
     def simulate_falling_rocks(self, n_rocks):
         for i in range(n_rocks):

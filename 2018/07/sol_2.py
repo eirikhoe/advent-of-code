@@ -3,6 +3,8 @@ import numpy as np
 import re
 from collections import defaultdict
 from time import sleep
+
+
 def main():
     data_folder = Path(".").resolve()
     instructions = data_folder.joinpath("input.txt").read_text().split("\n")
@@ -12,12 +14,12 @@ def main():
     length = 0
     for instruction in instructions:
         order = reg.match(instruction)
-        
-        orders.append((ord(order.group(1))-ord('A'),ord(order.group(2))-ord('A')))
+
+        orders.append((ord(order.group(1)) - ord("A"), ord(order.group(2)) - ord("A")))
         for char in orders[-1]:
-            if char+1 > length:
-                length = char+1
-    
+            if char + 1 > length:
+                length = char + 1
+
     reqs = [[] for i in range(length)]
     inv_reqs = [[] for i in range(length)]
     todo = set()
@@ -28,15 +30,14 @@ def main():
         todo.add(order[1])
 
     n_workers = 5
-    workers = [[-1,0] for i in range(n_workers)]
+    workers = [[-1, 0] for i in range(n_workers)]
     time = 0
     min_time_left = 1
     while todo or (min_time_left > 0):
-        for task,req in enumerate(reqs):
+        for task, req in enumerate(reqs):
             if (not req) and (task in todo):
                 for worker in workers:
                     if worker[0] == -1:
-                        
                         worker[0] = task
                         worker[1] = task_time(task)
                         todo.remove(task)
@@ -59,9 +60,10 @@ def main():
         time += min_time_left
 
     print(time)
-        
+
+
 def task_time(task):
-    return task+61
+    return task + 61
 
 
 if __name__ == "__main__":

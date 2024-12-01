@@ -48,7 +48,7 @@ def find_aunt(data, corrected=False):
 
         if right_aunt:
             aunt_candidates.append(m.group(1))
-    
+
     if len(aunt_candidates) == 0:
         return None
     elif len(aunt_candidates) > 1:

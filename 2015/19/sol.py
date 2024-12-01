@@ -42,8 +42,8 @@ def count_evolutions(reactions, molecule):
 def steps_to_molecule(molecule):
     """
     Use that every reaction is of one of two forms
-    1. X -> XX (or e -> XX) 
-    2. X -> XRn(XY)*XAr 
+    1. X -> XX (or e -> XX)
+    2. X -> XRn(XY)*XAr
     ( )* denotes 0 or more of the expression inside the parenthesis
     X denotes any element not equal to Rn, Y or Ar
     """
@@ -61,11 +61,11 @@ def steps_to_molecule(molecule):
                 assert i > index + 1
                 steps += i - index - 2
                 index = i
-        
+
         assert end_ind > index + 1
         steps += end_ind - index - 2
 
-        molecule = molecule[:start_ind] + molecule[(end_ind + 1):]
+        molecule = molecule[:start_ind] + molecule[(end_ind + 1) :]
         steps += 1
 
     return steps + len(molecule) - 1

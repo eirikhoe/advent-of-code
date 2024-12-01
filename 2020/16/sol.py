@@ -15,16 +15,12 @@ class Tickets:
             if m is None:
                 raise RuntimeError("Invalid rule input")
             g = m.groups()
-            self.rules.append(
-                [g[0], [int(g[1]), int(g[2])], [int(g[3]), int(g[4])]]
-            )
+            self.rules.append([g[0], [int(g[1]), int(g[2])], [int(g[3]), int(g[4])]])
             i += 1
         i += 2
         self.mine = [int(d) for d in lines[i].split(",")]
         i += 3
-        self.nearby = [
-            [int(d) for d in line.split(",")] for line in lines[i:]
-        ]
+        self.nearby = [[int(d) for d in line.split(",")] for line in lines[i:]]
         self._possible_categories = None
         self.error_rate = self._discard_invalid_and_return_error_rate()
         self.categories = self._find_categories()
@@ -70,9 +66,7 @@ class Tickets:
 
         cat_lengths = [len(cat) for cat in possible_categories]
         sorted_index = np.argsort(cat_lengths)
-        self._possible_categories = [
-            possible_categories[s] for s in sorted_index
-        ]
+        self._possible_categories = [possible_categories[s] for s in sorted_index]
 
         assigned = []
         sorted_categories = self._assign_category(assigned)
@@ -80,10 +74,10 @@ class Tickets:
         categories = sorted_categories.copy()
         for i, _ in enumerate(categories):
             categories[sorted_index[i]] = sorted_categories[i]
-        
+
         return categories
 
-    def find_departure_prod(self): 
+    def find_departure_prod(self):
         departure_prod = 1
         for i, _ in enumerate(self.categories):
             if self.categories[i].startswith("departure"):
@@ -117,6 +111,7 @@ def main():
     departure_prod = t.find_departure_prod()
     print("The product of the six departure fields on the ")
     print(f"ticket is {departure_prod}")
+
 
 if __name__ == "__main__":
     main()

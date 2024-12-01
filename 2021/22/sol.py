@@ -49,7 +49,9 @@ class Reactor:
             cube = self.cubes[i]
             increment = False
             for dim in range(3):
-                if (instr.low[dim] > cube.high[dim]) or (instr.high[dim] < cube.low[dim]):
+                if (instr.low[dim] > cube.high[dim]) or (
+                    instr.high[dim] < cube.low[dim]
+                ):
                     increment = True
                     break
                 else:
@@ -72,7 +74,6 @@ class Reactor:
             self.cubes.append(Cube(low=cube_data.low, high=cube_data.high))
 
     def get_total_n_cubes(self):
-
         return sum([cube.get_n_cubes() for cube in self.cubes])
 
 

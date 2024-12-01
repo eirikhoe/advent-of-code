@@ -4,6 +4,7 @@ import time
 
 data_folder = Path(".").resolve()
 
+
 @dataclass
 class Seacucumbers:
     herds: list[set[tuple[int]]]
@@ -13,7 +14,7 @@ class Seacucumbers:
     def _can_move(self, pos):
         return all(pos not in self.herds[i] for i in range(2))
 
-    def step(self,print):
+    def step(self, print):
         self.n_steps += 1
         n_moves = 0
         for i, herd in enumerate(self.herds):
@@ -49,6 +50,7 @@ class Seacucumbers:
     def move(self, print=False):
         while self.step(print=print) > 0:
             pass
+
 
 def parse_data(data):
     lines = data.split("\n")

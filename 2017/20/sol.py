@@ -9,15 +9,16 @@ reg = re.compile(
     r"p=< *(-?\d+), *(-?\d+), *(-?\d+)>, v=< *(-?\d+), *(-?\d+), *(-?\d+)>, a=< *(-?\d+), *(-?\d+), *(-?\d+)>"
 )
 
+
 def man_dist(v):
     return np.sum(np.abs(v))
 
-def vel_crit(a,v):
-    s = np.sign(a)
-    crit = np.sum(s*v)
-    crit += np.sum(np.where(a==0,1,0)*np.abs(v))
-    return  crit
 
+def vel_crit(a, v):
+    s = np.sign(a)
+    crit = np.sum(s * v)
+    crit += np.sum(np.where(a == 0, 1, 0) * np.abs(v))
+    return crit
 
 
 class Particles:
@@ -39,11 +40,11 @@ class Particles:
         self.p += self.v
 
     def resolve_col(self):
-        index = np.full(self.n,fill_value=False,dtype=bool)
-        for i in range(1,self.n):
-            idx = np.r_[i:self.n,0:i]
-            collision = np.all(self.p == self.p[idx],axis=1)
-            index = np.logical_or(index,collision)
+        index = np.full(self.n, fill_value=False, dtype=bool)
+        for i in range(1, self.n):
+            idx = np.r_[i : self.n, 0:i]
+            collision = np.all(self.p == self.p[idx], axis=1)
+            index = np.logical_or(index, collision)
         self.p = self.p[~index]
         self.v = self.v[~index]
         self.a = self.a[~index]
@@ -52,27 +53,25 @@ class Particles:
 
     def n_possible_collisions(self):
         possible_collisons = 0
-        for i in range(1,self.n):
-            idx = np.r_[i:self.n,0:i]
-            p_s = self.p<self.p[idx]
-            v_s = self.v<=self.v[idx]
-            a_s = self.a<=self.a[idx]
-            left_not_collision = np.stack((p_s,v_s,a_s),axis=-1)
-            left_not_collision = np.all(left_not_collision,axis=2)
-            left_not_collision = np.any(left_not_collision,axis=1)
+        for i in range(1, self.n):
+            idx = np.r_[i : self.n, 0:i]
+            p_s = self.p < self.p[idx]
+            v_s = self.v <= self.v[idx]
+            a_s = self.a <= self.a[idx]
+            left_not_collision = np.stack((p_s, v_s, a_s), axis=-1)
+            left_not_collision = np.all(left_not_collision, axis=2)
+            left_not_collision = np.any(left_not_collision, axis=1)
 
-            p_s = self.p>self.p[idx]
-            v_s = self.v>=self.v[idx]
-            a_s = self.a>=self.a[idx]
-            right_not_collision = np.stack((p_s,v_s,a_s),axis=-1)
-            right_not_collision = np.all(right_not_collision ,axis=2)
-            right_not_collision = np.any(right_not_collision ,axis=1)
-            
-            not_collision = np.logical_or(left_not_collision,right_not_collision)
+            p_s = self.p > self.p[idx]
+            v_s = self.v >= self.v[idx]
+            a_s = self.a >= self.a[idx]
+            right_not_collision = np.stack((p_s, v_s, a_s), axis=-1)
+            right_not_collision = np.all(right_not_collision, axis=2)
+            right_not_collision = np.any(right_not_collision, axis=1)
+
+            not_collision = np.logical_or(left_not_collision, right_not_collision)
             possible_collisons += np.sum(~not_collision)
         return possible_collisons
-
-
 
     def evolve_until_collisions(self):
         self.resolve_col()
@@ -83,11 +82,11 @@ class Particles:
     def find_closest_particle(self):
         min_ind = 0
         min_a = man_dist(self.a[0])
-        min_v = vel_crit(self.a[0],self.v[0])
+        min_v = vel_crit(self.a[0], self.v[0])
         for i in range(1, self.n):
             a_norm = man_dist(self.a[i])
-            v_crit = vel_crit(self.a[i],self.v[i])
-            if (a_norm < min_a) or ((a_norm == min_a) and (v_crit < min_v)): 
+            v_crit = vel_crit(self.a[i], self.v[i])
+            if (a_norm < min_a) or ((a_norm == min_a) and (v_crit < min_v)):
                 min_a = a_norm
                 min_v = v_crit
                 min_ind = i

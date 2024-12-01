@@ -23,7 +23,9 @@ def make_big_scan(scan):
         for j in range(dup_factor):
             for k in range(s[0]):
                 for l in range(s[1]):
-                    big_scan[k + i * s[0]][l + j * s[1]] = 1 + ((scan[k][l] + i + j - 1) % 9)
+                    big_scan[k + i * s[0]][l + j * s[1]] = 1 + (
+                        (scan[k][l] + i + j - 1) % 9
+                    )
     return big_scan
 
 
@@ -58,7 +60,7 @@ def find_cave_path(scan):
             if not seen[new_cand[0]][new_cand[1]]:
                 better = True
                 for q in queue:
-                    if (q[0], q[1]) == (new_cand[0], new_cand[1]):  
+                    if (q[0], q[1]) == (new_cand[0], new_cand[1]):
                         if q[2] <= new_cand[2]:
                             better = False
                             break

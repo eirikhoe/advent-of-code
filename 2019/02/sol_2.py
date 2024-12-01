@@ -36,4 +36,3 @@ for noun in range(100):
         break
 
 print(100 * noun + verb)
-

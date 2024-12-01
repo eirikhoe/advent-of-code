@@ -66,7 +66,11 @@ class Cave:
         while (not self.floor and (pos[1] < self.lowest_rock)) or (
             self.floor and (self.grid[self.start] == "+")
         ):
-            cands = [(pos[0], pos[1] + 1), (pos[0] - 1, pos[1] + 1), (pos[0] + 1, pos[1] + 1)]
+            cands = [
+                (pos[0], pos[1] + 1),
+                (pos[0] - 1, pos[1] + 1),
+                (pos[0] + 1, pos[1] + 1),
+            ]
             for cand in cands:
                 if self.floor and (pos[1] == (self.lowest_rock + 1)):
                     continue
@@ -105,7 +109,9 @@ def main():
     print("Part 2")
     cave = Cave(data, floor=True)
     n_grains = cave.pour_sand(print=False)
-    print(f"With floor {n_grains} grains of sand come to rest before blocking the source.")
+    print(
+        f"With floor {n_grains} grains of sand come to rest before blocking the source."
+    )
     print()
 
 

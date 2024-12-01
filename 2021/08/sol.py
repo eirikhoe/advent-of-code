@@ -90,7 +90,9 @@ def main():
 
     print("Part 1")
     n_digit_appearances = count_digit_appearances(digits_list, display_list)
-    print(f"In the output values, the digits 1, 4, 7, or 8 appear {n_digit_appearances} times.")
+    print(
+        f"In the output values, the digits 1, 4, 7, or 8 appear {n_digit_appearances} times."
+    )
     print()
 
     print("Part 2")

@@ -3,26 +3,26 @@ from math import prod
 
 data_folder = Path(".").resolve()
 
+
 def total_wrapping_paper_area(data):
     area = 0
-    for line in data.split('\n'):
-        dimensions = [int(d) for d in line.split('x')]
+    for line in data.split("\n"):
+        dimensions = [int(d) for d in line.split("x")]
         dimensions.sort()
-        area += 3*dimensions[0]*dimensions[1]
-        area += 2*dimensions[1]*dimensions[2]
-        area += 2*dimensions[2]*dimensions[0]
+        area += 3 * dimensions[0] * dimensions[1]
+        area += 2 * dimensions[1] * dimensions[2]
+        area += 2 * dimensions[2] * dimensions[0]
     return area
+
 
 def total_ribbon_length(data):
     length = 0
-    for line in data.split('\n'):
-        dimensions = [int(d) for d in line.split('x')]
+    for line in data.split("\n"):
+        dimensions = [int(d) for d in line.split("x")]
         dimensions.sort()
-        length += 2*(dimensions[0]+dimensions[1])
+        length += 2 * (dimensions[0] + dimensions[1])
         length += prod(dimensions)
     return length
-
-
 
 
 def main():

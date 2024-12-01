@@ -44,7 +44,9 @@ class Valves:
                 if option[j] == 0:
                     if closed[self.id[name]] and (self.flow_rates[name] > 0):
                         closed[self.id[name]] = False
-                        released += (time_limit - minutes_passed) * self.flow_rates[name]
+                        released += (time_limit - minutes_passed) * self.flow_rates[
+                            name
+                        ]
                         came_from[j] = None
                     else:
                         valid = False
@@ -81,7 +83,9 @@ class Valves:
                 )
             ]
         )
-        positive_flow_rate = [name for name in self.flow_rates if self.flow_rates[name] > 0]
+        positive_flow_rate = [
+            name for name in self.flow_rates if self.flow_rates[name] > 0
+        ]
         max_pressure_release = 0
         best = {}
         curr_min = 0
@@ -106,14 +110,20 @@ class Valves:
                 i = 0
                 to_delete = set()
                 while i < len(best[index]):
-                    if (state[2] <= best[index][i][0]) and opened.issubset(best[index][i][1]):
+                    if (state[2] <= best[index][i][0]) and opened.issubset(
+                        best[index][i][1]
+                    ):
                         match = True
                         break
-                    elif (state[2] >= best[index][i][0]) and best[index][i][1].issubset(opened):
+                    elif (state[2] >= best[index][i][0]) and best[index][i][1].issubset(
+                        opened
+                    ):
                         to_delete.add(i)
                     i += 1
                 if len(to_delete) > 0:
-                    best[index] = [i for j, i in enumerate(best[index]) if j not in to_delete]
+                    best[index] = [
+                        i for j, i in enumerate(best[index]) if j not in to_delete
+                    ]
                 if match:
                     continue
                 else:
@@ -150,14 +160,18 @@ def main():
     time_limit = 30
     n_people = 1
     max_pressure_release = valves.find_max_pressure_release("AA", time_limit, n_people)
-    print(f"The max pressure you can release in {time_limit} minutes with {n_people} people is {max_pressure_release}.")
+    print(
+        f"The max pressure you can release in {time_limit} minutes with {n_people} people is {max_pressure_release}."
+    )
     print()
 
     print("Part 2")
     time_limit = 26
     n_people = 2
     max_pressure_release = valves.find_max_pressure_release("AA", time_limit, n_people)
-    print(f"The max pressure you can release in {time_limit} minutes with {n_people} people is {max_pressure_release}.")
+    print(
+        f"The max pressure you can release in {time_limit} minutes with {n_people} people is {max_pressure_release}."
+    )
     print()
 
 

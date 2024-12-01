@@ -50,8 +50,7 @@ def main():
     data_folder = Path(__file__).parent.resolve()
     data = data_folder.joinpath("input.txt").read_text()
     equations = [
-        eq.replace("(", "( ").replace(")", " )").split()
-        for eq in data.split("\n")
+        eq.replace("(", "( ").replace(")", " )").split() for eq in data.split("\n")
     ]
 
     print("Part 1")

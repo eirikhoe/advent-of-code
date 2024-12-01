@@ -19,4 +19,3 @@ for number in range(146810, 612564 + 1):
         count += 1
 
 print(count)
-

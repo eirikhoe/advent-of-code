@@ -1,12 +1,11 @@
 import numpy as np
 
-def find_crossing_point(first_seg, second_seg):
 
+def find_crossing_point(first_seg, second_seg):
     # Is the first segment vertical
     if first_seg[0, 0] == first_seg[0, 1]:
         # Is the second segment vertical
         if second_seg[0, 0] == second_seg[0, 1]:
-
             # Only way to have intersection is if x-coordinates match
             if second_seg[0, 0] == first_seg[0, 0]:
                 coords_y = np.arange(
@@ -18,7 +17,6 @@ def find_crossing_point(first_seg, second_seg):
             else:
                 return None
         else:
-
             # Check for possible crossing point when second segment is horisontal
             if (
                 first_seg[0, 0] >= second_seg[0].min()
@@ -34,7 +32,6 @@ def find_crossing_point(first_seg, second_seg):
     else:
         # Check if second segment is horisontal
         if second_seg[1, 0] == second_seg[1, 1]:
-
             # Only way to have intersection is if y-coordinates match
             if second_seg[1, 0] == first_seg[1, 0]:
                 coords_x = np.arange(
@@ -47,7 +44,6 @@ def find_crossing_point(first_seg, second_seg):
             else:
                 return None
         else:
-
             # Check for possible crossing point when second segment is vertical
             if (
                 first_seg[1, 0] >= second_seg[1].min()
@@ -58,6 +54,7 @@ def find_crossing_point(first_seg, second_seg):
                 return np.reshape([second_seg[0, 0], first_seg[1, 0]], (2, 1))
             else:
                 return None
+
 
 wires = []
 with open("input.txt", "r") as file:
@@ -88,12 +85,12 @@ for i, wire in enumerate(wires):
     wires[i] = wire_points
 
 min_crossing_point_dist = np.inf
-for i in range(wires[0].shape[1]-1):
-    for j in range(wires[1].shape[1]-1):
-        add_points = find_crossing_point(wires[0][:,i:i+2],wires[1][:,j:j+2])
+for i in range(wires[0].shape[1] - 1):
+    for j in range(wires[1].shape[1] - 1):
+        add_points = find_crossing_point(wires[0][:, i : i + 2], wires[1][:, j : j + 2])
         if add_points is not None:
             for k in range(add_points[0].size):
-                dist = np.sum(np.abs(add_points[:,k]))
+                dist = np.sum(np.abs(add_points[:, k]))
                 if (dist > 0) and (dist < min_crossing_point_dist):
                     min_crossing_point_dist = dist
 

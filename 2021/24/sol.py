@@ -9,12 +9,12 @@ reg = re.compile(
     + r"mul y 0\nadd y w\nadd y (-?\d+)\nmul y x\nadd z y\n"
 )
 
+
 def analyze_prod(data):
-    res = re.findall(reg,data)
+    res = re.findall(reg, data)
     res = [[d.rjust(3) for d in r] for r in res]
     for row in res:
         print(" ".join(row))
-
 
 
 class Device:
@@ -75,7 +75,7 @@ class Device:
         if not isinstance(val, int):
             val = self.reg[val]
             reg_val = self.reg[reg_name]
-            if (val <= 0) or (reg_val < 0): 
+            if (val <= 0) or (reg_val < 0):
                 raise ValueError("Illegal values for modulo operation")
         self.reg[reg_name] %= val
 
@@ -106,7 +106,7 @@ class Device:
         self.input = inp
         for i, instr in enumerate(self.instrs):
             self.operate(instr[0], instr[1:])
-            if debug: 
+            if debug:
                 print(instr)
                 print(self.reg)
 
@@ -115,14 +115,13 @@ def main():
     data = data_folder.joinpath("input.txt").read_text()
     device = Device(data)
 
-
     # Solutions found through manual analysis using, among other things, the debug mode of run_prog
     print("Part 1")
-    print(f"The largest model number accepted by monad is {99394899891971}")  
+    print(f"The largest model number accepted by monad is {99394899891971}")
     print()
 
     print("Part 2")
-    print(f"The smallest model number accepted by monad is {92171126131911}")  
+    print(f"The smallest model number accepted by monad is {92171126131911}")
     print()
 
 

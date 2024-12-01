@@ -22,7 +22,6 @@ def parse_data(data):
 
 
 def solve_allergies(ingredients, allergens):
-
     danger_cand = dict()
     inert = set()
     for j, allergens_per_food in enumerate(allergens):

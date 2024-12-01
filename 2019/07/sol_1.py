@@ -111,6 +111,7 @@ def run_intcode(instrs, input_values):
             op_mode = digits[-2] * 10 + digits[-1]
     return output_value
 
+
 with open("input.txt", "r") as file:
     orig_instrs = [int(instr) for instr in file.read().split(",")]
 
@@ -119,7 +120,7 @@ for perm in itertools.permutations(list(range(5))):
     output_value = 0
     for setting in perm:
         instrs = orig_instrs.copy()
-        output_value = run_intcode(instrs,[setting,output_value])
+        output_value = run_intcode(instrs, [setting, output_value])
     if output_value > max_signal:
         max_signal = output_value
 

@@ -1,6 +1,7 @@
 from pathlib import Path
 import re
 from collections import deque
+
 data_folder = Path(".").resolve()
 reg = re.compile(r"(\d+) <-> (.+)")
 
@@ -23,7 +24,7 @@ def find_groups(comms):
             groups[in_groups[0]] += comms[i]
             groups[in_groups[0]] = list(set(groups[in_groups[0]]))
     return groups
-                
+
 
 def main():
     data = data_folder.joinpath("input.txt").read_text()
@@ -31,11 +32,10 @@ def main():
     for line in data.split("\n"):
         m = reg.match(line)
         l = [int(m.group(1))]
-        l += l+[int(d) for d in m.group(2).split(", ")]
+        l += l + [int(d) for d in m.group(2).split(", ")]
         l = list(set(l))
         direct_comm.append(l)
-    
-    
+
     print("Part 1")
     groups = find_groups(direct_comm)
     prog_id = 0
@@ -45,7 +45,9 @@ def main():
             len_prog_id_group = len(group)
             break
 
-    print(f"There are {len_prog_id_group} programs in the group that contains program ID {prog_id}")
+    print(
+        f"There are {len_prog_id_group} programs in the group that contains program ID {prog_id}"
+    )
     print()
     print("Part 2")
     print(f"There are {len(groups)} program groups in total")

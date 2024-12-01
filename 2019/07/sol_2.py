@@ -117,7 +117,7 @@ with open("input.txt", "r") as file:
 
 max_signal = -int(1e20)
 
-for perm in itertools.permutations(list(range(5,10))):
+for perm in itertools.permutations(list(range(5, 10))):
     output_value = 0
     instrs = [0] * 5
     ptr = [0] * 5
@@ -128,7 +128,9 @@ for perm in itertools.permutations(list(range(5,10))):
     output = False
     while not output:
         for i in range(5):
-            possible_out, ptr[i], op_mode = run_intcode(instrs[i], [output_value], ptr[i])
+            possible_out, ptr[i], op_mode = run_intcode(
+                instrs[i], [output_value], ptr[i]
+            )
             if op_mode == 99:
                 output = True
                 break

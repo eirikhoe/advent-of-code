@@ -11,4 +11,3 @@ for key in orbits:
         n_orbits += 1
 
 print(n_orbits)
-

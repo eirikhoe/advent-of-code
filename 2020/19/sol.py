@@ -66,8 +66,8 @@ def find_rule_options(rules, ind):
 
 def _validate(message, loops, left_options, right_options):
     """
-    Assumes the structure of the problem holds. Thus denoting 
-    rules by their number we have that without loops 
+    Assumes the structure of the problem holds. Thus denoting
+    rules by their number we have that without loops
     0 = 42 42 31. With loops rule 0 is n 42s followed by
     m 31s where n > m >= 1.
     """

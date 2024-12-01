@@ -79,7 +79,11 @@ def main():
     used = folders[0].total_dir_size
     minimum_delete = used - (total_size - req_free)
     min_folder_delete = min(
-        [folder.total_dir_size for folder in folders if folder.total_dir_size >= minimum_delete]
+        [
+            folder.total_dir_size
+            for folder in folders
+            if folder.total_dir_size >= minimum_delete
+        ]
     )
     print(f"The smallest folder you must delete has size {min_folder_delete}")
     print()

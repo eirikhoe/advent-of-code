@@ -20,7 +20,6 @@ def sim_battle(boss, player):
 
 
 def optimize_equpment(equipment, boss, player, win_goal=True):
-
     stats = ["Cost", "Damage", "Armor"]
     weapons = equipment["Weapons"]
     armor = equipment["Armor"]

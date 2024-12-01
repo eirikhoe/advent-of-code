@@ -9,7 +9,7 @@ reg = re.compile(r"([#./]+) => ([#./]+)")
 
 class Cluster:
     dirs = [(-1, 0), (0, -1), (1, 0), (0, 1)]
-    states = {'Clean':0,'Weakened':1,"Infected":2,"Flagged":3}
+    states = {"Clean": 0, "Weakened": 1, "Infected": 2, "Flagged": 3}
 
     def __init__(self, data):
         self.infected = dict()
@@ -28,28 +28,30 @@ class Cluster:
         for i, row in enumerate(grid):
             for j, char in enumerate(row):
                 if char == "#":
-                    self.infected[(i - n_rows // 2, j - n_cols // 2)] = Cluster.states['Infected']
+                    self.infected[(i - n_rows // 2, j - n_cols // 2)] = Cluster.states[
+                        "Infected"
+                    ]
 
     def move(self):
         if self.virus_loc in self.infected:
             state = self.infected[self.virus_loc]
-            if state == Cluster.states['Infected']:
+            if state == Cluster.states["Infected"]:
                 self.dir_index = (self.dir_index - 1) % 4
-            elif state == Cluster.states['Flagged']:
+            elif state == Cluster.states["Flagged"]:
                 self.dir_index = (self.dir_index + 2) % 4
         else:
             self.dir_index = (self.dir_index + 1) % 4
-            state = Cluster.states['Clean']
-        
-        state = (state+1) % 4
-        if state == Cluster.states['Clean']:
-                del self.infected[self.virus_loc]
+            state = Cluster.states["Clean"]
+
+        state = (state + 1) % 4
+        if state == Cluster.states["Clean"]:
+            del self.infected[self.virus_loc]
         else:
             self.infected[self.virus_loc] = state
 
-        if state == Cluster.states['Infected']:
-            self.infectious_bursts += 1    
-            
+        if state == Cluster.states["Infected"]:
+            self.infectious_bursts += 1
+
         p = self.virus_loc
         v = Cluster.dirs[self.dir_index]
         self.virus_loc = (p[0] + v[0], p[1] + v[1])
@@ -85,7 +87,9 @@ class Cluster:
             dtype=int,
         )
         map_array[:, 1::2] = 0
-        map_array[tile_rows - row_dim[0], 2 * (tile_columns - column_dim[0])+1] = types
+        map_array[tile_rows - row_dim[0], 2 * (tile_columns - column_dim[0]) + 1] = (
+            types
+        )
         map_array[
             self.virus_loc[0] - row_dim[0], 2 * (self.virus_loc[1] - column_dim[0])
         ] = 4

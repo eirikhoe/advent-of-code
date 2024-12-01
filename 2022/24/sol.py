@@ -40,7 +40,8 @@ class Maze:
             dir = symb_to_vec[type]
             for pos in self.initial_blizzards[type]:
                 new_pos = tuple(
-                    ((pos[i] - 1 + dir[i] * time) % (self.size[i] - 2)) + 1 for i in range(2)
+                    ((pos[i] - 1 + dir[i] * time) % (self.size[i] - 2)) + 1
+                    for i in range(2)
                 )
                 blizzards.add(new_pos)
         return blizzards

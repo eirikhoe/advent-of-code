@@ -140,7 +140,6 @@ class IntCodeProgram:
 
 
 class Computer:
-
     n_computers = 0
     queue = []
     nat_packet = []

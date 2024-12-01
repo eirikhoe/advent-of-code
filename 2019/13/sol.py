@@ -4,10 +4,12 @@ import copy
 import time
 import os
 from colorama import init
+
 init()
 data_folder = Path(__file__).parent.resolve()
 
 rg = np.random.default_rng()
+
 
 class IntCodeProgram:
     """A Class for the state of an IntCode program"""
@@ -37,24 +39,25 @@ class IntCodeProgram:
             return self.get(ptr, 1)
         elif mode == 2:
             return self.get(ptr, 1) + self.rel_base
-    
+
     def reset(self):
         self.rel_base = 0
         self.instr_ptr = 0
         self.input = None
         self.output = None
 
+
 class Game:
     """A class for an IntCode Game"""
+
     def __init__(self, prog):
         self.board = {}
         self.prog = IntCodeProgram(prog)
         self.score = 0
-        self.ball_loc = (0,0)
-        self.paddle_loc = (1000,1000)
+        self.ball_loc = (0, 0)
+        self.paddle_loc = (1000, 1000)
 
-
-    def draw_block(self,location,block_type):
+    def draw_block(self, location, block_type):
         self.board[location] = block_type
         if block_type == 4:
             self.ball_loc = location
@@ -67,7 +70,6 @@ class Game:
             if self.board[location] == 2:
                 n_block_tiles += 1
         return n_block_tiles
-
 
     def print_board(self):
         row_dim = [0, 0]
@@ -95,29 +97,30 @@ class Game:
         )
         board[tile_rows - row_dim[0], tile_columns - column_dim[0]] = colors
 
-        print(f"\033[2;1HSCORE: {self.score}\t\t   BLOCKS LEFT: {self.get_n_block_tiles()}")    
+        print(
+            f"\033[2;1HSCORE: {self.score}\t\t   BLOCKS LEFT: {self.get_n_block_tiles()}"
+        )
         print(
             "\n".join(
                 [
                     "".join([str(d) for d in row])
                     .replace("0", " ")
-                    .replace("1", u"\u2588")
-                    .replace("2", u"\u25A0")
-                    .replace("3", u"\u2500")
-                    .replace('4',u"\u25CF")
+                    .replace("1", "\u2588")
+                    .replace("2", "\u25a0")
+                    .replace("3", "\u2500")
+                    .replace("4", "\u25cf")
                     for row in board
                 ]
             )
         )
         time.sleep(0.01)
 
-    
     def run(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system("cls" if os.name == "nt" else "clear")
         end_of_program = False
-        output_type = ['x','y','type']
+        output_type = ["x", "y", "type"]
         output_index = 0
-        current_location = [0,0]
+        current_location = [0, 0]
         self.prog.reset()
         while not end_of_program:
             digits = [int(d) for d in str(self.prog.get(self.prog.instr_ptr, 1))]
@@ -143,9 +146,10 @@ class Game:
                         if (current_location[0] == -1) and (current_location[1] == 0):
                             self.score = self.prog.output
                         else:
-                            self.draw_block(tuple(current_location),self.prog.output)
+                            self.draw_block(tuple(current_location), self.prog.output)
                     output_index = (output_index + 1) % 3
         self.print_board()
+
 
 def add(prog, modes):
     n_params = 3
@@ -247,19 +251,22 @@ operations = {
 file = data_folder / "input.txt"
 instrs = [int(instr) for instr in file.read_text().split(",")]
 
-def main(): 
+
+def main():
     # Part 1
     game = Game(instrs)
     game.run()
     initial_blocks = game.get_n_block_tiles()
 
-    game.prog.set(0,1,2)
+    game.prog.set(0, 1, 2)
     game.run()
     if game.get_n_block_tiles() == 0:
         print(f"All {initial_blocks} blocks have been destroyed!")
-        print('GAME OVER')
+        print("GAME OVER")
     else:
         print(f"Failed to destroy all {initial_blocks} blocks!")
-        print('GAME OVER')
+        print("GAME OVER")
+
+
 if __name__ == "__main__":
     main()

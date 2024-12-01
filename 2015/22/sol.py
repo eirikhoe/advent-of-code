@@ -173,7 +173,6 @@ def find_lowest_mana(initial_state, hard=False):
 
 
 def main():
-
     state = State(58, 9, 50, 500)
 
     print("Part 1")

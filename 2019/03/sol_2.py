@@ -2,12 +2,10 @@ import numpy as np
 
 
 def find_crossing_times(first_seg, second_seg):
-
     # Is the first segment vertical
     if first_seg[0, 0] == first_seg[0, 1]:
         # Is the second segment vertical
         if second_seg[0, 0] == second_seg[0, 1]:
-
             # Only way to have intersection is if x-coordinates match
             if second_seg[0, 0] == first_seg[0, 0]:
                 coords_y = np.arange(
@@ -15,14 +13,13 @@ def find_crossing_times(first_seg, second_seg):
                     min(first_seg[1].max(), second_seg[1].max()) + 1,
                 )
                 coords_x = np.full(coords_y.size, first_seg[0, 0], dtype=int)
-                first_len = first_seg[2,0]+np.abs(first_seg[1,0]-coords_y)
-                second_len = second_seg[2,0]+np.abs(second_seg[1,0]-coords_y)
+                first_len = first_seg[2, 0] + np.abs(first_seg[1, 0] - coords_y)
+                second_len = second_seg[2, 0] + np.abs(second_seg[1, 0] - coords_y)
 
                 return np.array([first_len, second_len])
             else:
                 return None
         else:
-
             # Check for possible crossing point when second segment is horisontal
             if (
                 first_seg[0, 0] >= second_seg[0].min()
@@ -30,10 +27,12 @@ def find_crossing_times(first_seg, second_seg):
                 and second_seg[1, 0] >= first_seg[1].min()
                 and second_seg[1, 0] <= first_seg[1].max()
             ):
-                first_len = first_seg[2,0]+np.abs(first_seg[1,0]-second_seg[1,0])
-                second_len = second_seg[2,0]+np.abs(second_seg[0,0]-first_seg[0,0])
+                first_len = first_seg[2, 0] + np.abs(first_seg[1, 0] - second_seg[1, 0])
+                second_len = second_seg[2, 0] + np.abs(
+                    second_seg[0, 0] - first_seg[0, 0]
+                )
 
-                return np.reshape([first_len, second_len],(2,1))
+                return np.reshape([first_len, second_len], (2, 1))
             else:
                 return None
 
@@ -41,7 +40,6 @@ def find_crossing_times(first_seg, second_seg):
     else:
         # Check if second segment is horisontal
         if second_seg[1, 0] == second_seg[1, 1]:
-
             # Only way to have intersection is if y-coordinates match
             if second_seg[1, 0] == first_seg[1, 0]:
                 coords_x = np.arange(
@@ -49,14 +47,13 @@ def find_crossing_times(first_seg, second_seg):
                     min(first_seg[0].max(), second_seg[0].max()) + 1,
                 )
                 coords_y = np.full(coords_x.size, first_seg[1, 0], dtype=int)
-                first_len = first_seg[2,0]+np.abs(first_seg[0,0]-coords_x)
-                second_len = second_seg[2,0]+np.abs(second_seg[0,0]-coords_x)
+                first_len = first_seg[2, 0] + np.abs(first_seg[0, 0] - coords_x)
+                second_len = second_seg[2, 0] + np.abs(second_seg[0, 0] - coords_x)
 
                 return np.array([first_len, second_len])
             else:
                 return None
         else:
-
             # Check for possible crossing point when second segment is vertical
             if (
                 first_seg[1, 0] >= second_seg[1].min()
@@ -64,10 +61,12 @@ def find_crossing_times(first_seg, second_seg):
                 and second_seg[0, 0] >= first_seg[0].min()
                 and second_seg[0, 0] <= first_seg[0].max()
             ):
-                first_len = first_seg[2,0]+np.abs(first_seg[0,0]-second_seg[0,0])
-                second_len = second_seg[2,0]+np.abs(second_seg[1,0]-first_seg[1,0])
+                first_len = first_seg[2, 0] + np.abs(first_seg[0, 0] - second_seg[0, 0])
+                second_len = second_seg[2, 0] + np.abs(
+                    second_seg[1, 0] - first_seg[1, 0]
+                )
 
-                return np.reshape([first_len, second_len],(2,1))
+                return np.reshape([first_len, second_len], (2, 1))
             else:
                 return None
 

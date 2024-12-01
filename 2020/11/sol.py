@@ -10,7 +10,7 @@ class Layout:
         self.taken_limit = 5
         if adjacent:
             self.taken_limit = 4
-        
+
     def step(self):
         new_ground = deepcopy(self.floor)
         state_change = False
@@ -59,7 +59,7 @@ class Layout:
         for dir in adj_dirs:
             curr = [y + dir[0], x + dir[1]]
             while (0 <= curr[0] < self.dim[0]) and (0 <= curr[1] < self.dim[1]):
-                n_occupied += (self.floor[curr[0]][curr[1]] == "#")
+                n_occupied += self.floor[curr[0]][curr[1]] == "#"
                 if self.adjacent or (self.floor[curr[0]][curr[1]] != "."):
                     break
                 curr[0] += dir[0]

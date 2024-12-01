@@ -106,13 +106,15 @@ def main():
     data = data_folder.joinpath("input.txt").read_text()
 
     t = Tower(data)
-    
+
     print("Part 1")
     print(f"The bottom program is {t.bottom}")
     print()
 
     print("Part 2")
-    print(f"The inbalanced node's weight would need to be {t.balanced_weight()} to balance the entire tower")
+    print(
+        f"The inbalanced node's weight would need to be {t.balanced_weight()} to balance the entire tower"
+    )
 
 
 if __name__ == "__main__":

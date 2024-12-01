@@ -29,7 +29,9 @@ def main():
     n_increasing = count_increasing_depth(data, measurement_window)
 
     print("Part 2")
-    print(f"{n_increasing} sums of {measurement_window} are larger than the previous sum.")
+    print(
+        f"{n_increasing} sums of {measurement_window} are larger than the previous sum."
+    )
     print()
 
 

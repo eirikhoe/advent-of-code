@@ -63,7 +63,9 @@ class Device:
                 screen[cycle - 1] = "#" if self.is_pixel_on(cycle) else "."
             self.operate(instr[0], instr[1:])
         for i in range(self.screen_height):
-            print("".join(screen[(i * self.screen_width) : ((i + 1) * self.screen_width)]))
+            print(
+                "".join(screen[(i * self.screen_width) : ((i + 1) * self.screen_width)])
+            )
 
     def find_interesting_signal_strength_sum(self, interesting_cycle):
         for reg_name in self.reg:

@@ -2,6 +2,7 @@ from pathlib import Path
 from copy import deepcopy
 from time import sleep
 
+
 def main():
     data_folder = Path(".").resolve()
     data = data_folder.joinpath("input.txt").read_text().split("\n")
@@ -15,45 +16,47 @@ def main():
     print("Part 2")
     print(f"The packet needs to go {p.n_steps} steps")
 
-class Packet():
-    
+
+class Packet:
     @classmethod
-    def rot(self,v,type):
-        rotated = {'R':(-v[1],v[0]),'L':(v[1],-v[0]),'S':v}
-            
+    def rot(self, v, type):
+        rotated = {"R": (-v[1], v[0]), "L": (v[1], -v[0]), "S": v}
+
         return rotated[type]
 
-    def __init__(self,data):
+    def __init__(self, data):
         data = deepcopy(data)
         self.track = data
         self.letters = ""
         self.pos = self.find_start_pos()
-        self.dir = (1,0)
+        self.dir = (1, 0)
         self.n_steps = 1
 
-
     def find_start_pos(self):
-        for i,pos in enumerate(self.track[0]):
-            if pos == '|':
-                return (0,i)
+        for i, pos in enumerate(self.track[0]):
+            if pos == "|":
+                return (0, i)
 
-    def inbounds(self,pos):
+    def inbounds(self, pos):
         return (0 <= pos[0] < len(self.track)) and (0 <= pos[1] < len(self.track[0]))
+
     def move(self):
         while True:
-            y,x = self.pos
-            vy,vx = self.dir
-            if  65 <= ord(self.track[y][x]) <= 90:
+            y, x = self.pos
+            vy, vx = self.dir
+            if 65 <= ord(self.track[y][x]) <= 90:
                 self.letters += self.track[y][x]
 
-            if self.inbounds((y+vy,x+vx)) and (self.track[y+vy][x+vx] != " "):
-                self.pos = (y+vy,x+vx)
+            if self.inbounds((y + vy, x + vx)) and (self.track[y + vy][x + vx] != " "):
+                self.pos = (y + vy, x + vx)
             else:
-                alt_v = [(1-abs(vy),1-abs(vx)),(-1+abs(vy),-1+abs(vx))]
+                alt_v = [(1 - abs(vy), 1 - abs(vx)), (-1 + abs(vy), -1 + abs(vx))]
                 path_end = True
                 for v in alt_v:
-                    if (self.inbounds((y+v[0],x+v[1]))) and (self.track[y+v[0]][x+v[1]] != ' '):
-                        self.pos = (y+v[0],x+v[1])
+                    if (self.inbounds((y + v[0], x + v[1]))) and (
+                        self.track[y + v[0]][x + v[1]] != " "
+                    ):
+                        self.pos = (y + v[0], x + v[1])
                         self.dir = v
                         path_end = False
                 if path_end:
@@ -62,11 +65,11 @@ class Packet():
 
     def print_track(self):
         track = deepcopy(self.track)
-        track[self.pos[0]][self.pos[1]] = '#'
+        track[self.pos[0]][self.pos[1]] = "#"
         s = ""
-        s += "Found letters: " + self.letters + '\n\n'
+        s += "Found letters: " + self.letters + "\n\n"
         col_size = len(track[0])
-        col_digits = len(str(col_size-1))
+        col_digits = len(str(col_size - 1))
         form_str = "{:" + str(col_digits) + "d}"
         for j in range(col_digits):
             s += " "
@@ -76,13 +79,13 @@ class Packet():
             s += "\n"
 
         row_size = len(track)
-        row_digits = len(str(row_size-1))
+        row_digits = len(str(row_size - 1))
         form_str = "{:" + str(row_digits) + "d}"
         for y in range(row_size):
             s += form_str.format(y)
-            s += "".join(track[y])    
+            s += "".join(track[y])
             s += "\n"
-        print(s)               
+        print(s)
 
 
 if __name__ == "__main__":

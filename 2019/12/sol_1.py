@@ -9,7 +9,8 @@ def total_system_energy(positions, velocities):
     total = np.sum(kinetic * potential)
     return total
 
-def calculate_energy(positions,n_steps):
+
+def calculate_energy(positions, n_steps):
     velocities = np.zeros(positions.shape, dtype=int)
     change_velocities = np.zeros(positions.shape, dtype=int)
     n_planets = positions[:, 0].size
@@ -28,7 +29,8 @@ def calculate_energy(positions,n_steps):
         velocities += change_velocities
         positions += velocities
 
-    return total_system_energy(positions,velocities)
+    return total_system_energy(positions, velocities)
+
 
 def main():
     data_folder = Path(".").resolve()
@@ -39,11 +41,10 @@ def main():
         [[int(d) for d in position] for position in find_coords.findall(data)]
     )
     n_steps = 1000
-    total_energy = calculate_energy(positions,n_steps)
+    total_energy = calculate_energy(positions, n_steps)
 
-    print(
-        f"The total system energy after {n_steps} steps is {total_energy}"
-    )
+    print(f"The total system energy after {n_steps} steps is {total_energy}")
+
 
 if __name__ == "__main__":
     main()

@@ -38,7 +38,7 @@ class Table:
             happiness_matrix[i, j] = h[1]
         return happiness_matrix
 
-    def find_max_happiness(self,include_self=False):
+    def find_max_happiness(self, include_self=False):
         n = self.n_people
         if include_self:
             n += 1
@@ -49,9 +49,9 @@ class Table:
             for j in range(n):
                 i = (j + 1) % n
 
-                if (order[i]==self.n_people) or (order[j]==self.n_people):
-                    continue 
-                
+                if (order[i] == self.n_people) or (order[j] == self.n_people):
+                    continue
+
                 happiness += self.happiness[order[j], order[i]]
                 happiness += self.happiness[order[i], order[j]]
 
@@ -59,6 +59,7 @@ class Table:
                 max_happiness = happiness
 
         return max_happiness
+
 
 def main():
     data_folder = Path(".").resolve()

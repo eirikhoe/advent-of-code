@@ -85,26 +85,27 @@ def find_furthest_tile(field):
             max_dist = distance
     return max_dist
 
+
 def count_inside(field):
     start_pos = find_start_pos(field)
-    start_tile = find_start_tile(field,start_pos)
+    start_tile = find_start_tile(field, start_pos)
     distances = dict()
     initial_dir = tiles[start_tile][0]
-    distances = find_distances(start_pos,start_tile,field,initial_dir,distances)
+    distances = find_distances(start_pos, start_tile, field, initial_dir, distances)
     field = copy.deepcopy(field)
     field[start_pos[0]][start_pos[1]] = start_tile
     loop = set(distances.keys())
     inside_count = 0
-    for i,_ in enumerate(field):
+    for i, _ in enumerate(field):
         inside = False
         j = 0
         while j < len(field[i]):
-            if ((i,j) not in loop): 
+            if (i, j) not in loop:
                 inside_count += int(inside)
                 j += 1
                 continue
             if field[i][j] == "|":
-                inside = (not inside)
+                inside = not inside
                 j += 1
             else:
                 first_tile = field[i][j]
@@ -113,9 +114,10 @@ def count_inside(field):
                     j += 1
                 second_tile = field[i][j]
                 if len(set(tiles[first_tile]).intersection(tiles[second_tile])) == 0:
-                    inside = (not inside)
+                    inside = not inside
                 j += 1
     return inside_count
+
 
 def parse_data(data):
     field = [list(line) for line in data.split("\n")]

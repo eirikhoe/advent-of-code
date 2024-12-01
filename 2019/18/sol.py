@@ -2,6 +2,7 @@ from pathlib import Path
 import numpy as np
 import copy
 import time
+
 data_folder = Path(__file__).parent.resolve()
 
 
@@ -211,17 +212,19 @@ class Maze:
 
 def main():
     start_time = time.perf_counter()
-    print('Part 1')
+    print("Part 1")
     file = data_folder / "input_1.txt"
     maze = Maze(file)
     print(f"It takes {maze.solve()} steps to collect all the keys")
     print()
 
-    print('Part 2')
+    print("Part 2")
     file = data_folder / "input_2.txt"
     maze = Maze(file)
     print(f"It takes {maze.solve()} steps to collect all the keys")
 
     print(time.perf_counter() - start_time)
+
+
 if __name__ == "__main__":
     main()

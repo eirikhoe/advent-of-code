@@ -39,13 +39,17 @@ def main():
     print("Part 1")
     cost_type = "constant"
     fuel_cost = compute_lowest_cost(crab_pos, cost_type)
-    print(f"The optimal alignment position has fuel cost {fuel_cost} when the cost is {cost_type}")
+    print(
+        f"The optimal alignment position has fuel cost {fuel_cost} when the cost is {cost_type}"
+    )
     print()
 
     print("Part 2")
     cost_type = "linear"
     fuel_cost = compute_lowest_cost(crab_pos, cost_type)
-    print(f"The optimal alignment position has fuel cost {fuel_cost} when the cost is {cost_type}")
+    print(
+        f"The optimal alignment position has fuel cost {fuel_cost} when the cost is {cost_type}"
+    )
     print()
 
 

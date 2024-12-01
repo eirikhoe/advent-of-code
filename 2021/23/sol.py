@@ -150,7 +150,8 @@ def print_state(state):
 
 def solve(initial_state):
     final_state = tuple(
-        [0 for _ in range(7)] + [i + 1 for i in range(4) for _ in range(room_size(initial_state))]
+        [0 for _ in range(7)]
+        + [i + 1 for i in range(4) for _ in range(room_size(initial_state))]
     )
     candidates = set()
     candidates.add(initial_state)
@@ -172,7 +173,6 @@ def solve(initial_state):
 
 
 def main():
-
     print("Part 1")
     data = data_folder.joinpath("input_1.txt").read_text()
     state = parse_data(data)
@@ -184,7 +184,9 @@ def main():
     data = data_folder.joinpath("input_2.txt").read_text()
     state = parse_data(data)
     min_cost = solve(state)
-    print(f"The least energy required to organize the amphipods for the full diagram is {min_cost}")
+    print(
+        f"The least energy required to organize the amphipods for the full diagram is {min_cost}"
+    )
 
     print()
 

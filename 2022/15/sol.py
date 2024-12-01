@@ -11,7 +11,9 @@ def parse_data(data):
     coords = []
     for line in data.split("\n"):
         group = sensor_reg.match(line).groups()
-        coords.append([tuple(int(g) for g in group[:2]), tuple(int(g) for g in group[2:])])
+        coords.append(
+            [tuple(int(g) for g in group[:2]), tuple(int(g) for g in group[2:])]
+        )
     return coords
 
 
@@ -51,11 +53,14 @@ def find_beacon_pos(coords, limits):
     options = [[[0, limits[0]]] for _ in range(limits[1] + 1)]
     for coord in coords:
         dist = manhattan_distance(coord[0], coord[1])
-        for y in range(max(coord[0][1] - dist, 0), min(coord[0][1] + dist, limits[1]) + 1):
+        for y in range(
+            max(coord[0][1] - dist, 0), min(coord[0][1] + dist, limits[1]) + 1
+        ):
             y_dist = abs(coord[0][1] - y)
             x_range = dist - y_dist
             options[y] = rule_out(
-                options[y], [max(coord[0][0] - x_range, 0), min(coord[0][0] + x_range, limits[0])]
+                options[y],
+                [max(coord[0][0] - x_range, 0), min(coord[0][0] + x_range, limits[0])],
             )
     for y, option in enumerate(options):
         if (len(option) == 1) and (option[0][0] == option[0][1]):

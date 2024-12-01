@@ -1,6 +1,7 @@
 from pathlib import Path
 from math import factorial
 
+
 class Device:
     """A Class for the state of an IntCode program"""
 
@@ -82,7 +83,11 @@ class Device:
     def run_prog(self, debug=False):
         while 0 <= self.instr_ptr < len(self.instrs):
             if debug:
-                print(self.instr_ptr, ' '.join([str(d) for d in self.instrs[self.instr_ptr]]),self.reg)
+                print(
+                    self.instr_ptr,
+                    " ".join([str(d) for d in self.instrs[self.instr_ptr]]),
+                    self.reg,
+                )
                 input()
             self.operate()
             self.instr_ptr += 1
@@ -94,18 +99,17 @@ def main():
 
     print("Part 1:")
     d = Device(data)
-    d.reg['a'] = 7
+    d.reg["a"] = 7
     d.run_prog()
     print(f"The value {d.reg['a']} should be sent to the safe")
     print()
 
     print("Part 2:")
-    # Let x be the initial value in reg a. From studying the code 
+    # Let x be the initial value in reg a. From studying the code
     # you find it computes x! + 72*75 for x>=6.
     x = 12
-    ans = factorial(x) + 72*75
+    ans = factorial(x) + 72 * 75
     print(f"The value {ans} should be sent to the safe")
-    
 
 
 if __name__ == "__main__":

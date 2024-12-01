@@ -2,7 +2,6 @@ from pathlib import Path
 
 
 def play(first_cups, n_moves, total_cups=None, n_neighbours=None):
-
     n_first_cups = len(first_cups)
     if n_neighbours is None:
         n_neighbours = n_first_cups - 1

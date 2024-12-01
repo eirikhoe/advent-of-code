@@ -54,7 +54,9 @@ def get_array_from_index(file, initial_index):
 
 
 def get_groove_coordinate_sum(file, zero_index):
-    groove_coordinates = [get_relative_value(file, zero_index, i) for i in [1000, 2000, 3000]]
+    groove_coordinates = [
+        get_relative_value(file, zero_index, i) for i in [1000, 2000, 3000]
+    ]
     return sum(groove_coordinates)
 
 

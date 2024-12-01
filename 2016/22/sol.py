@@ -30,7 +30,7 @@ class Storage:
         self.x_size = max(x) + 1
         self.capacity = np.zeros((self.y_size, self.x_size), dtype=np.int16)
         self.used = np.zeros((self.y_size, self.x_size), dtype=np.int16)
-        self.data_pos = (0,self.x_size-1)
+        self.data_pos = (0, self.x_size - 1)
 
         for i in range(len(x)):
             self.capacity[y[i], x[i]] = capacity_list[i]
@@ -124,7 +124,7 @@ class Storage:
             state = queue.popleft()
             curr_distance = distance[state]
             self.data_pos = state[0]
-            
+
             for candidate in self._get_candidates(state[0]):
                 new_state = (candidate, state[0])
                 new_distance = curr_distance + self.bfs(state[1], candidate) + 1
@@ -139,7 +139,7 @@ class Storage:
                         queue.append(new_state)
                 else:
                     continue
-        
+
         return min_distance
 
 

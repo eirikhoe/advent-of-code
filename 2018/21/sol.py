@@ -2,19 +2,21 @@ from pathlib import Path
 import re
 from copy import deepcopy
 from bisect import bisect_left
+
+
 class Device:
     """A Class for the state of an IntCode program"""
 
-    def __init__(self,data,reg = [0,0,0,0,0,0]):
-        data = data.split('\n')
+    def __init__(self, data, reg=[0, 0, 0, 0, 0, 0]):
+        data = data.split("\n")
         self.reg = reg
-        self.instr_ptr = int(re.match(r"#ip (\d)",data[0]).group(1))
+        self.instr_ptr = int(re.match(r"#ip (\d)", data[0]).group(1))
         self.instrs = []
         for line in data[1:]:
             line = line.split(" ")
-            for i in range(1,len(line)):
+            for i in range(1, len(line)):
                 line[i] = int(line[i])
-            self.instrs.append(line) 
+            self.instrs.append(line)
         self.n_instr = 0
 
     def addr(self, instr):
@@ -82,36 +84,36 @@ class Device:
         "eqir": eqir,
         "eqri": eqri,
         "eqrr": eqrr,
-
     }
 
-    def operate(self,op_name,instr):
+    def operate(self, op_name, instr):
         op = Device.operations[op_name]
-        op(self,instr)
+        op(self, instr)
 
     def run_prog(self):
         c = 0
         while 0 <= self.reg[self.instr_ptr] < len(self.instrs):
             instr = self.instrs[self.reg[self.instr_ptr]]
-            self.operate(instr[0],instr[1:])
+            self.operate(instr[0], instr[1:])
             self.reg[self.instr_ptr] += 1
             self.n_instr += 1
             if self.reg[self.instr_ptr] == 28:
                 c += 1
-                print(c,[self.reg[2],self.reg[5]])
+                print(c, [self.reg[2], self.reg[5]])
 
-def main(): 
+
+def main():
     data_folder = Path(".").resolve()
     data = data_folder.joinpath("input.txt").read_text()
 
     print("Part 1:")
-    # Program is independent of register 0 until the 
-    # first time we hit instruction 28. Then program exits 
-    # if register 0 is equal to the current value in 
+    # Program is independent of register 0 until the
+    # first time we hit instruction 28. Then program exits
+    # if register 0 is equal to the current value in
     # register 2, 8797248.
 
     ans = 8797248
-    d = Device(data,[ans,0,0,0,0,0])
+    d = Device(data, [ans, 0, 0, 0, 0, 0])
     d.run_prog()
     print(f"Program halted after {d.n_instr} instructions.")
     print(f"Register 0 had initial value {ans}.")
@@ -137,12 +139,13 @@ def find_last_value():
             x = x & 16777215
             x *= 65899
             x = x & 16777215
-            j  += 1
+            j += 1
         i += 1
         for val in vals:
             if val == x:
                 return vals[-1]
         vals.append(x)
+
 
 if __name__ == "__main__":
     main()

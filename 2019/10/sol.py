@@ -78,6 +78,9 @@ rank[order] = np.arange(n_asteroids, dtype=int)
 
 i = 200
 
-print(f"Asteroid {i} to be destroyed has location {coords_x[order[i-1]]},{coords_y[order[i-1]]}.")
-print(f"Thus the answer to Part 2 is: {coords_x[order[i-1]] * 100 + coords_y[order[i-1]]}")
-
+print(
+    f"Asteroid {i} to be destroyed has location {coords_x[order[i-1]]},{coords_y[order[i-1]]}."
+)
+print(
+    f"Thus the answer to Part 2 is: {coords_x[order[i-1]] * 100 + coords_y[order[i-1]]}"
+)

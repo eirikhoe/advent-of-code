@@ -22,7 +22,6 @@ def get_tile_borders(tile, dir="all"):
 
 
 def tile_to_id(tile, dir, reverse=False):
-
     step = 1
     if reverse:
         step = -1
@@ -58,7 +57,6 @@ def rotate(tile, deg, flip_hor=False):
 
 class Image:
     def __init__(self, data, pattern):
-
         self.tiles = dict()
         self.borders = dict()
         self.n_tiles = 0
@@ -90,11 +88,9 @@ class Image:
             assert self.tiles[id].shape[0] == self.tile_dim
             assert self.tiles[id].shape[1] == self.tile_dim
         self.puzzle_dim = int(np.round(np.sqrt(self.n_tiles)))
-        assert self.puzzle_dim ** 2 == self.n_tiles
+        assert self.puzzle_dim**2 == self.n_tiles
 
-        self.solution = np.zeros(
-            (self.puzzle_dim, self.puzzle_dim), dtype=int
-        )
+        self.solution = np.zeros((self.puzzle_dim, self.puzzle_dim), dtype=int)
         self._solve()
 
         lines = pattern.split("\n")
@@ -167,17 +163,13 @@ class Image:
                     valid &= self._check_direction_unique(tile, "up")
                 else:
                     up = self.tiles[self.solution[row - 1, col]]
-                    valid &= tile_to_id(tile, "up") == tile_to_id(
-                        up, "down"
-                    )
+                    valid &= tile_to_id(tile, "up") == tile_to_id(up, "down")
 
                 if col == 0:
                     valid &= self._check_direction_unique(tile, "left")
                 else:
                     left = self.tiles[self.solution[row, col - 1]]
-                    valid &= tile_to_id(tile, "left") == tile_to_id(
-                        left, "right"
-                    )
+                    valid &= tile_to_id(tile, "left") == tile_to_id(left, "right")
 
                 if row == self.puzzle_dim - 1:
                     valid &= self._check_direction_unique(tile, "down")
@@ -198,9 +190,7 @@ class Image:
         for col in range(self.puzzle_dim):
             im_row = 0
             for row in range(self.puzzle_dim):
-                tile = np.copy(self.tiles[self.solution[row, col]])[
-                    1:-1, 1:-1
-                ]
+                tile = np.copy(self.tiles[self.solution[row, col]])[1:-1, 1:-1]
                 self.image[
                     im_row : im_row + tile.shape[0],
                     im_col : im_col + tile.shape[1],
@@ -217,9 +207,7 @@ class Image:
             image = rotate(self.image, rot, flip)
             n_monsters = 0
             for row in range(image.shape[0] - self.pattern.shape[0] + 1):
-                for col in range(
-                    image.shape[1] - self.pattern.shape[1] + 1
-                ):
+                for col in range(image.shape[1] - self.pattern.shape[1] + 1):
                     part = image[
                         row : row + self.pattern.shape[0],
                         col : col + self.pattern.shape[1],
@@ -253,8 +241,6 @@ class Image:
 
     def find_habitat_roughness(self):
         return np.sum(self.image == 1)
-
-
 
 
 def main():
